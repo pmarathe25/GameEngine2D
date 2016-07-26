@@ -10,7 +10,7 @@ void RenderSystem::update() {
     }
 }
 
-Component* RenderSystem::addComponent(const RenderComponent& newComponent) {
+Component* RenderSystem::addComponent(const RendeComponent& newComponent) {
     components.push_back(newComponent);
     return &components.back();
 }
