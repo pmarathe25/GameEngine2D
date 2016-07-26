@@ -1,5 +1,8 @@
+#include "GameEngine2D/Entity/EntityManager.hpp"
+#include "GameEngine2D/Component/RenderComponent.hpp"
+
 EntityManager::EntityManager(sf::RenderWindow* window, int expectedNumEntities) {
-    renderModule = RenderComponent(window);
+    renderModule = RenderComponent(window, expectedNumEntities);
     entities.reserve(expectedNumEntities);
 }
 
@@ -29,5 +32,5 @@ void attachComponent(int eID, const Component& component) {
 }
 
 void detachComponent(int eID, componentID cID) {
-    
+
 }

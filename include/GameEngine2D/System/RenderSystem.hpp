@@ -7,7 +7,7 @@
 
 class RenderSystem : public System {
     public:
-        RenderSystem();
+        RenderSystem(sf::RenderWindow* window, int expectedNumEntities);
         virtual void update();
         virtual Component* addComponent(const RenderComponent& newComponent);
     private:

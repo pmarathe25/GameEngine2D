@@ -1,7 +1,8 @@
 #include "GameEngine2D/System/RenderSystem.hpp"
 
-RenderSystem::RenderSystem(sf::RenderWindow* window) {
+RenderSystem::RenderSystem(sf::RenderWindow* window, int expectedNumEntities) {
     this -> window = window;
+    components.reserve(numExpectedEntities)
 }
 
 void RenderSystem::update() {
