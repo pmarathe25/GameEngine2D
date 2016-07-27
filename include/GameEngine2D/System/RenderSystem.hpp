@@ -8,10 +8,10 @@
 class RenderSystem : public System {
     public:
         RenderSystem(sf::RenderWindow* window, int expectedNumEntities);
-        virtual void update();
-        virtual Component* addComponent(const RenderComponent& newComponent);
+        void update();
+        Component* addComponent(const RenderComponent& newComponent);
     private:
-        std::vector<RenderComponent> components;
+        std::vector<RenderComponent> renderComponents;
         sf::RenderWindow* window;
 };
 

@@ -6,7 +6,6 @@ class System {
     public:
         System();
         virtual void update() = 0;
-        virtual Component* addComponent(const Component& newComponent) = 0;
 };
 
 #endif

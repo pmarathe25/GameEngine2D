@@ -8,7 +8,7 @@ class Entity {
     public:
         Entity(const sf::Vector2f& position);
         Component* getComponentByID(componentID id);
-        void addComponent(Component* newComponent);
+        void registerComponent(Component* newComponent);
         sf::Vector2f position;
     private:
         std::map<componentID, Component*> components;

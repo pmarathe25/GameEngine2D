@@ -2,22 +2,25 @@
 #define ENTITY_MANAGER_H
 #include "GameEngine2D/Entity/Entity.hpp"
 #include "GameEngine2D/Component/Component.hpp"
+#include "GameEngine2D/System/RenderSystem.hpp"
 #include <SFML/Window.hpp>
+#include <SFML/Graphics.hpp>
 #include <vector>
 #include <deque>
 
 class EntityManager {
     public:
         EntityManager(sf::RenderWindow* window, int expectedNumEntities = 10);
-        int getNewEntity(const sf::Vector2f& position);
+        int createEntity(const sf::Vector2f& position = sf::Vector2f(0, 0));
         void destroyEntity(int eID);
         void update(float frametime);
-        void attachComponent(int eID, const Component& component);
+        void attachComponent(int eID, const RenderComponent& component);
         void detachComponent(int eID, componentID cID);
+        Entity& getEntity(int eID);
     private:
         std::vector<Entity> entities;
-        std::deque<int> freeIDs;
-        RenderSystem renderModule;
+        std::deque<int> freeIDs = {};
+        RenderSystem renderSystem;
 };
 
 #endif

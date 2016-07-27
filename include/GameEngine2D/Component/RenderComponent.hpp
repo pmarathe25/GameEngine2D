@@ -5,7 +5,7 @@
 
 class RenderComponent : public Component {
     public:
-        RenderComponent(const sf::Texture& texture, const sf::Vector2f& position = sf::Vector2f(0, 0));
+        RenderComponent(const sf::Texture& texture);
         sf::Sprite sprite;
 };
 

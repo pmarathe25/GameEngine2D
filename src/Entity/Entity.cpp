@@ -12,6 +12,6 @@ Component* Entity::getComponentByID(componentID id) {
     }
 }
 
-void Entity::addComponent(Component* newComponent) {
+void Entity::registerComponent(Component* newComponent) {
     components[newComponent -> cID] = newComponent;
 }
