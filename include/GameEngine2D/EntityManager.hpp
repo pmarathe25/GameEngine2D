@@ -15,11 +15,13 @@ class EntityManager {
         void destroyEntity(int eID);
         void update(float frametime);
         void attachComponent(int eID, const RenderComponent& component);
+        // Remove any kind of component.
         void detachComponent(int eID, componentID cID);
         Entity& getEntity(int eID);
+        Entity& getOwningEntity(const Component& component);
     private:
         std::vector<Entity> entities;
-        std::deque<int> freeIDs = {};
+        std::deque<int> freeIDs;
         RenderSystem renderSystem;
 };
 

@@ -1,11 +1,15 @@
 #ifndef SYSTEM_H
 #define SYSTEM_H
-#include "GameEngine2D/Component/Component.hpp"
+#include <utility>
+
+class EntityManager;
 
 class System {
     public:
-        System();
+        System(EntityManager* entityManager);
         virtual void update() = 0;
+    protected:
+        EntityManager* entityManager;
 };
 
 #endif

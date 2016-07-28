@@ -7,9 +7,10 @@
 
 class RenderSystem : public System {
     public:
-        RenderSystem(sf::RenderWindow* window, int expectedNumEntities);
+        RenderSystem(EntityManager* entityManager, sf::RenderWindow* window, int expectedNumEntities);
         void update();
-        Component* addComponent(const RenderComponent& newComponent);
+        std::pair<Component*, int> addComponent(const RenderComponent& newComponent);
+        void removeComponent(int index);
     private:
         std::vector<RenderComponent> renderComponents;
         sf::RenderWindow* window;

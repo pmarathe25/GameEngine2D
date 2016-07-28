@@ -1,17 +1,34 @@
 #include "GameEngine2D/Entity/Entity.hpp"
+#include "GameEngine2D/Component/RenderComponent.hpp"
 
-Entity::Entity(const sf::Vector2f& position) {
+Entity::Entity(int eID, const sf::Vector2f& position) {
+    this -> eID = eID;
     this -> position = position;
 }
 
-Component* Entity::getComponentByID(componentID id) {
+int Entity::getComponentIndexByID(componentID id) {
     if (components.count(id) > 0) {
         return components.at(id);
     } else {
-        return nullptr;
+        return -1;
     }
 }
 
-void Entity::registerComponent(Component* newComponent) {
-    components[newComponent -> cID] = newComponent;
+void Entity::registerComponent(std::pair<Component*, int> component) {
+    components[component.first -> cID] = component.second;
+    component.first -> eID = eID;
+    switch (component.first -> cID) {
+        case RENDER:
+            static_cast<RenderComponent*>(component.first) -> sprite.setPosition(position);
+    }
+}
+
+int Entity::deregisterComponent(componentID cID) {
+    int index = components.at(cID);
+    components.erase(cID);
+    return index;
+}
+
+void Entity::updateCommponent(componentID cID, int index) {
+    components.at(cID) = index;
 }
