@@ -37,7 +37,10 @@ void EntityManager::update(float frametime) {
 }
 
 void EntityManager::attachComponent(int eID, const RenderComponent& component) {
-    entities.at(eID).registerComponent(renderSystem.addComponent(component));
+    // Only attach if the component does not already exist.
+    if (entities.at(eID).getComponentIndexByID(component.cID) == -1) {
+        entities.at(eID).registerComponent(renderSystem.addComponent(component));
+    }
 }
 
 void EntityManager::detachComponent(int eID, componentID cID) {

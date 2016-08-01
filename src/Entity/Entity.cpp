@@ -16,15 +16,16 @@ int Entity::getComponentIndexByID(componentID id) {
 
 void Entity::registerComponent(std::pair<Component*, int> component) {
     components[component.first -> cID] = component.second;
-    component.first -> eID = eID;
+    component.first -> eID = this -> eID;
     switch (component.first -> cID) {
         case RENDER:
             static_cast<RenderComponent*>(component.first) -> sprite.setPosition(position);
+            break;
     }
 }
 
 int Entity::deregisterComponent(componentID cID) {
-    int index = components.at(cID);
+    int index = getComponentIndexByID(cID);
     components.erase(cID);
     return index;
 }

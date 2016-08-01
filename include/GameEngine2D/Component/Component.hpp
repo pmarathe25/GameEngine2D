@@ -2,7 +2,8 @@
 #define COMPONENT_H
 
 enum componentID {
-    RENDER = 0
+    RENDER = 0,
+    PHYSICS
 };
 
 class Component {
