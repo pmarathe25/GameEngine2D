@@ -3,6 +3,7 @@
 #include "GameEngine2D/Entity/Entity.hpp"
 #include "GameEngine2D/Component/Component.hpp"
 #include "GameEngine2D/System/RenderSystem.hpp"
+#include "GameEngine2D/System/PhysicsSystem.hpp"
 #include <SFML/Window.hpp>
 #include <SFML/Graphics.hpp>
 #include <vector>
@@ -14,14 +15,16 @@ class EntityManager {
         int createEntity(const sf::Vector2f& position = sf::Vector2f(0, 0));
         void destroyEntity(int eID);
         void update(float frametime);
-        void attachComponent(int eID, const RenderComponent& component);
-        // Remove any kind of component.
-        void detachComponent(int eID, componentID cID);
+        // Attach a component of any kind. Return whether it was successfully attached.
+        bool attachComponent(int eID, const Component& component);
+        // Remove any kind of component. Return whether it was successfully detached.
+        bool detachComponent(int eID, componentID cID);
     private:
         std::vector<Entity> entities;
         std::deque<int> freeIDs;
         RenderSystem renderSystem;
-        void updateEntity(int eID, componentID cID, int newComponentIndex);
+        // PhysicsSystem physicsSystem;
+        void updateEntity(int eID, componentID cID, int componentIndex);
         Entity& getEntity(int eID);
         Entity& getOwningEntity(const Component& component);
 };

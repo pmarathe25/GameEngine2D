@@ -9,7 +9,7 @@ class System {
         System(int expectedNumEntities) {
             components.reserve(expectedNumEntities);
         }
-        // Add a component to the system.
+        // Add a component to the system and returns a pointer to it and index (to register it with the entity).
         std::pair<Component*, int> addComponent(const ComponentType& newComponent) {
             if (components.size() + 1 >= components.capacity()) {
                 components.reserve(components.capacity() * 2);
@@ -17,7 +17,7 @@ class System {
             components.push_back(newComponent);
             return std::make_pair(&components.back(), components.size() - 1);
         }
-        // Remove a component from the system.
+        // Remove a component from the system and returns the eID of the owning entity of the other modified component.
         int removeComponent(int index) {
             // Swap the component to remove with the last component.
             components.at(index) = components.back();

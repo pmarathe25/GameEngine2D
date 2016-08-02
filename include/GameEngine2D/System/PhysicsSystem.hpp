@@ -10,3 +10,5 @@ class PhysicsSystem : public System<PhysicsComponent> {
         PhysicsSystem(int expectedNumEntities);
         void update(float frametime);
 };
+
+#endif

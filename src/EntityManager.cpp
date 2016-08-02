@@ -33,24 +33,40 @@ void EntityManager::update(float frametime) {
     renderSystem.update();
 }
 
-void EntityManager::attachComponent(int eID, const RenderComponent& component) {
+bool EntityManager::attachComponent(int eID, const Component& component) {
     // Only attach if the component does not already exist.
-    if (getEntity(eID).getComponentIndexByID(component.cID) == -1) {
-        getEntity(eID).registerComponent(renderSystem.addComponent(component));
+    if (getEntity(eID).getComponentIndexByID(component.cID) != -1) {
+        return false;
     }
+    // Cast based on what kind of component it is.
+    switch (component.cID) {
+        case RENDER:
+            getEntity(eID).registerComponent(renderSystem.addComponent(static_cast<const RenderComponent&>(component)));
+            break;
+        // case PHYSICS:
+        //     getEntity(eID).registerComponent(physicsSystem.addComponent(static_cast<const PhysicsComponent&>(component)));
+        //     break;
+    }
+    return true;
 }
 
-void EntityManager::detachComponent(int eID, componentID cID) {
+bool EntityManager::detachComponent(int eID, componentID cID) {
     // Remove it from the entity first, then from the system.
     int toRemove = getEntity(eID).deregisterComponent(cID);
-    if (toRemove != -1) {
-        // Detach the component from the entity and then update other entities that were modified.
-        switch (cID) {
-            case RENDER:
-                updateEntity(renderSystem.removeComponent(toRemove), RENDER, toRemove);
-                break;
-        }
+    // If the entity does not have the component.
+    if (toRemove == -1) {
+        return false;
     }
+    // Detach the component from the entity and then update other entities that were modified.
+    switch (cID) {
+        case RENDER:
+            updateEntity(renderSystem.removeComponent(toRemove), RENDER, toRemove);
+            break;
+        // case PHYSICS:
+        //     updateEntity(physicsSystem.removeComponent(toRemove), PHYSICS, toRemove);
+        //     break;
+    }
+    return true;
 }
 
 Entity& EntityManager::getEntity(int eID) {
@@ -61,8 +77,8 @@ Entity& EntityManager::getOwningEntity(const Component& component) {
     return getEntity(component.eID);
 }
 
-void EntityManager::updateEntity(int eID, componentID cID, int newComponentIndex) {
+void EntityManager::updateEntity(int eID, componentID cID, int componentIndex) {
     if (eID != -1) {
-        getEntity(eID).updateCommponent(cID, newComponentIndex);
+        getEntity(eID).updateCommponent(cID, componentIndex);
     }
 }
