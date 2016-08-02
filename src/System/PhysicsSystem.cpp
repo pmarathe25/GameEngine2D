@@ -1,9 +1,11 @@
 #include "GameEngine2D/System/PhysicsSystem.hpp"
 
-PhysicsSystem(int expectedNumEntities) : System(expectedNumEntities) {
-    
+PhysicsSystem::PhysicsSystem(int expectedNumEntities) : System(expectedNumEntities) {
+
 }
 
-void update(float frametime) {
-
+void PhysicsSystem::update(float frametime) {
+    for (std::vector<PhysicsComponent>::iterator physicsComponent = components.begin(); physicsComponent != components.end(); ++physicsComponent) {
+        physicsComponent -> position += physicsComponent -> velocity * frametime;
+    }
 }

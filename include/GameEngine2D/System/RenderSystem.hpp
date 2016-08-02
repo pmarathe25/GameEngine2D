@@ -3,7 +3,6 @@
 #include "GameEngine2D/System/System.hpp"
 #include "GameEngine2D/Component/RenderComponent.hpp"
 #include <vector>
-#include <utility>
 #include <SFML/Window.hpp>
 
 class RenderSystem : public System<RenderComponent> {

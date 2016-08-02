@@ -1,6 +1,6 @@
 #include "GameEngine2D/EntityManager.hpp"
 
-EntityManager::EntityManager(sf::RenderWindow* window, int expectedNumEntities) : renderSystem(window, expectedNumEntities) {
+EntityManager::EntityManager(sf::RenderWindow* window, int expectedNumEntities) : renderSystem(window, expectedNumEntities), physicsSystem(expectedNumEntities) {
     entities.reserve(expectedNumEntities);
 }
 
@@ -43,9 +43,9 @@ bool EntityManager::attachComponent(int eID, const Component& component) {
         case RENDER:
             getEntity(eID).registerComponent(renderSystem.addComponent(static_cast<const RenderComponent&>(component)));
             break;
-        // case PHYSICS:
-        //     getEntity(eID).registerComponent(physicsSystem.addComponent(static_cast<const PhysicsComponent&>(component)));
-        //     break;
+        case PHYSICS:
+            getEntity(eID).registerComponent(physicsSystem.addComponent(static_cast<const PhysicsComponent&>(component)));
+            break;
     }
     return true;
 }
@@ -62,9 +62,9 @@ bool EntityManager::detachComponent(int eID, componentID cID) {
         case RENDER:
             updateEntity(renderSystem.removeComponent(toRemove), RENDER, toRemove);
             break;
-        // case PHYSICS:
-        //     updateEntity(physicsSystem.removeComponent(toRemove), PHYSICS, toRemove);
-        //     break;
+        case PHYSICS:
+            updateEntity(physicsSystem.removeComponent(toRemove), PHYSICS, toRemove);
+            break;
     }
     return true;
 }

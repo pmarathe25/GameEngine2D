@@ -23,7 +23,7 @@ class EntityManager {
         std::vector<Entity> entities;
         std::deque<int> freeIDs;
         RenderSystem renderSystem;
-        // PhysicsSystem physicsSystem;
+        PhysicsSystem physicsSystem;
         void updateEntity(int eID, componentID cID, int componentIndex);
         Entity& getEntity(int eID);
         Entity& getOwningEntity(const Component& component);

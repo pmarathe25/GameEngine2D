@@ -13,6 +13,7 @@ int main() {
     for (int i = 1; i < 100; ++i) {
         int temp = entityManager.createEntity(sf::Vector2f(WINDOW_X / i, WINDOW_Y / i));
         entityManager.attachComponent(temp, RenderComponent(resourceManager.getTexture("player.png")));
+        entityManager.attachComponent(temp, PhysicsComponent(sf::Vector2f(10, 10)));
     }
     // Remove some entities.
     for (int i = 1; i < 3; ++i) {
