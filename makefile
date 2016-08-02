@@ -6,7 +6,7 @@ BIN = bin/
 LIBDIR = lib/
 LIBS =
 OBJS = $(BUILDDIR)/Component.o $(BUILDDIR)/Entity.o $(BUILDDIR)/RenderComponent.o $(BUILDDIR)/RenderSystem.o $(BUILDDIR)/EntityManager.o $(BUILDDIR)/tester.o \
-	$(BUILDDIR)/ResourceManager.o $(BUILDDIR)/System.o
+	$(BUILDDIR)/ResourceManager.o
 CXX = g++
 CFLAGS = -fPIC -c -I$(INCLUDEDIR) -std=c++11
 LFLAGS = -lsfml-graphics -lsfml-window -lsfml-system
@@ -34,9 +34,6 @@ $(BUILDDIR)/RenderComponent.o: $(SRCDIR)/Component/RenderComponent.cpp $(INCLUDE
 
 $(BUILDDIR)/Entity.o: $(SRCDIR)/Entity/Entity.cpp $(INCLUDEDIR)/GameEngine2D/Entity/Entity.hpp $(INCLUDEDIR)/GameEngine2D/Component/Component.hpp
 	$(CXX) $(CFLAGS) $(SRCDIR)/Entity/Entity.cpp -o $(BUILDDIR)/Entity.o
-
-$(BUILDDIR)/System.o: $(SRCDIR)/System/System.cpp $(INCLUDEDIR)/GameEngine2D/System/System.hpp $(INCLUDEDIR)/GameEngine2D/Component/Component.hpp
-	$(CXX) $(CFLAGS) $(SRCDIR)/System/System.cpp -o $(BUILDDIR)/System.o
 
 $(BUILDDIR)/RenderSystem.o: $(SRCDIR)/System/RenderSystem.cpp $(INCLUDEDIR)/GameEngine2D/System/RenderSystem.hpp \
 	$(INCLUDEDIR)/GameEngine2D/Component/RenderComponent.hpp $(INCLUDEDIR)/GameEngine2D/System/System.hpp

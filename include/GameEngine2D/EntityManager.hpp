@@ -17,12 +17,13 @@ class EntityManager {
         void attachComponent(int eID, const RenderComponent& component);
         // Remove any kind of component.
         void detachComponent(int eID, componentID cID);
-        Entity& getEntity(int eID);
-        Entity& getOwningEntity(const Component& component);
     private:
         std::vector<Entity> entities;
         std::deque<int> freeIDs;
         RenderSystem renderSystem;
+        void updateEntity(int eID, componentID cID, int newComponentIndex);
+        Entity& getEntity(int eID);
+        Entity& getOwningEntity(const Component& component);
 };
 
 #endif

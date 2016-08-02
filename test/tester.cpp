@@ -19,7 +19,7 @@ int main() {
         entityManager.destroyEntity(i);
     }
     // Remove some components.
-    for (int i = 3; i < 5; ++i) {
+    for (int i = 3; i < 10; ++i) {
         entityManager.detachComponent(i, RENDER);
     }
     sf::Clock clock;

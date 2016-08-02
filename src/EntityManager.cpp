@@ -1,6 +1,6 @@
 #include "GameEngine2D/EntityManager.hpp"
 
-EntityManager::EntityManager(sf::RenderWindow* window, int expectedNumEntities) : renderSystem(this, window, expectedNumEntities) {
+EntityManager::EntityManager(sf::RenderWindow* window, int expectedNumEntities) : renderSystem(window, expectedNumEntities) {
     entities.reserve(expectedNumEntities);
 }
 
@@ -9,7 +9,7 @@ int EntityManager::createEntity(const sf::Vector2f& position) {
     if (!freeIDs.empty()) {
         newID = freeIDs.back();
         freeIDs.pop_back();
-        entities.at(newID) = Entity(newID, position);
+        getEntity(newID) = Entity(newID, position);
     } else {
         newID = entities.size();
         if (newID >= entities.capacity()) {
@@ -22,11 +22,8 @@ int EntityManager::createEntity(const sf::Vector2f& position) {
 
 void EntityManager::destroyEntity(int eID) {
     // Destroy all components.
-    for (std::map<componentID, int>::iterator component = entities.at(eID).components.begin(); component != entities.at(eID).components.end(); ++component) {
-        switch (component -> first) {
-            case RENDER:
-                renderSystem.removeComponent(component -> second);
-        }
+    for (std::map<componentID, int>::iterator component = getEntity(eID).components.begin(); component != getEntity(eID).components.end(); ++component) {
+        detachComponent(eID, component -> first);
     }
     // Push the id to the freelist.
     freeIDs.push_back(eID);
@@ -38,18 +35,20 @@ void EntityManager::update(float frametime) {
 
 void EntityManager::attachComponent(int eID, const RenderComponent& component) {
     // Only attach if the component does not already exist.
-    if (entities.at(eID).getComponentIndexByID(component.cID) == -1) {
-        entities.at(eID).registerComponent(renderSystem.addComponent(component));
+    if (getEntity(eID).getComponentIndexByID(component.cID) == -1) {
+        getEntity(eID).registerComponent(renderSystem.addComponent(component));
     }
 }
 
 void EntityManager::detachComponent(int eID, componentID cID) {
     // Remove it from the entity first, then from the system.
-    int toRemove = entities.at(eID).deregisterComponent(cID);
+    int toRemove = getEntity(eID).deregisterComponent(cID);
     if (toRemove != -1) {
+        // Detach the component from the entity and then update other entities that were modified.
         switch (cID) {
             case RENDER:
-                renderSystem.removeComponent(toRemove);
+                updateEntity(renderSystem.removeComponent(toRemove), RENDER, toRemove);
+                break;
         }
     }
 }
@@ -59,5 +58,11 @@ Entity& EntityManager::getEntity(int eID) {
 }
 
 Entity& EntityManager::getOwningEntity(const Component& component) {
-    return entities.at(component.eID);
+    return getEntity(component.eID);
+}
+
+void EntityManager::updateEntity(int eID, componentID cID, int newComponentIndex) {
+    if (eID != -1) {
+        getEntity(eID).updateCommponent(cID, newComponentIndex);
+    }
 }

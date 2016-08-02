@@ -3,14 +3,10 @@
 #include "GameEngine2D/System/System.hpp"
 #include "GameEngine2D/Component/PhysicsComponent.hpp"
 #include <vector>
+#include <utility>
 
-class PhysicsSystem : public System {
+class PhysicsSystem : public System<PhysicsComponent> {
     public:
-        RenderSystem(EntityManager* entityManager, sf::RenderWindow* window, int expectedNumEntities);
-        void update();
-        std::pair<Component*, int> addComponent(const RenderComponent& newComponent);
-        void removeComponent(int index);
-    private:
-        std::vector<RenderComponent> renderComponents;
-        sf::RenderWindow* window;
+        PhysicsSystem(int expectedNumEntities);
+        void update(float frametime);
 };
