@@ -2,7 +2,7 @@
 #define EVENT_H
 
 enum eventID {
-    inputEvent = 0
+    INPUT = 0
 };
 
 class Event {
