@@ -9,6 +9,7 @@ class RenderSystem : public System<RenderComponent> {
     public:
         RenderSystem(sf::RenderWindow* window, int expectedNumEntities);
         void update();
+        void syncComponent(int componentIndex, const sf::Vector2f& position);
     private:
         sf::RenderWindow* window;
 };

@@ -2,7 +2,7 @@
 #define EVENT_H
 
 enum eventID {
-    bodyMoved = 0
+    inputEvent = 0
 };
 
 class Event {

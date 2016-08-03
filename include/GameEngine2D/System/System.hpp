@@ -32,7 +32,7 @@ class System {
             }
         }
         // Get a pointer to a component.
-        ComponentType* getComponentByIndex(int index) {
+        const ComponentType* getComponentByIndex(int index) {
             if (index >= 0 && index < components.size()) {
                 return &components.at(index);
             } else {
@@ -48,7 +48,7 @@ class System {
                 return false;
             }
         }
-        ComponentType* next() {
+        const ComponentType* next() {
             // Get a component and then increment the iterator.
             return getComponentByIndex(iteratorIndex++);
         }

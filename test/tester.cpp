@@ -1,5 +1,6 @@
 #include "GameEngine2D/ResourceManager.hpp"
 #include "GameEngine2D/EntityManager.hpp"
+#include <iostream>
 
 const int WINDOW_X = 1280;
 const int WINDOW_Y = 720;
@@ -9,10 +10,10 @@ int main() {
     resourceManager.addResourceDirectory("res/");
     sf::RenderWindow window(sf::VideoMode(WINDOW_X, WINDOW_Y), "ECS Test");
     EntityManager entityManager = EntityManager(&window, 100);
-    for (int i = 1; i < 100; ++i) {
-        int temp = entityManager.createEntity(sf::Vector2f(WINDOW_X / i, WINDOW_Y / i));
+    for (int i = 1; i < 10000; ++i) {
+        int temp = entityManager.createEntity(sf::Vector2f(WINDOW_X * float(rand()) / RAND_MAX, WINDOW_Y * float(rand()) / RAND_MAX));
         entityManager.attachComponent(temp, RenderComponent(resourceManager.getTexture("player.png")));
-        entityManager.attachComponent(temp, PhysicsComponent(sf::Vector2f(100 / i, 100 / i)));
+        entityManager.attachComponent(temp, PhysicsComponent(sf::Vector2f(100 * (float(rand()) / RAND_MAX - 0.5), 100 * (float(rand()) / RAND_MAX - 0.5))));
     }
     // Remove some entities.
     for (int i = 1; i < 3; ++i) {
@@ -32,6 +33,7 @@ int main() {
           }
         }
         float frametime = clock.restart().asSeconds();
+        std::cout << (1 / frametime) << std::endl;
         window.clear(sf::Color::White);
         entityManager.update(frametime);
         window.display();

@@ -90,7 +90,7 @@ void EntityManager::updateEntity(int eID, componentID cID, int componentIndex) {
 }
 
 void EntityManager::sync() {
-    PhysicsComponent* nextPhysicsComponent;
+    const PhysicsComponent* nextPhysicsComponent;
     Entity* entityToSync;
     int renderComponentIndex;
     // Sync physics and render systems.
@@ -100,7 +100,7 @@ void EntityManager::sync() {
         renderComponentIndex = entityToSync -> getComponentIndexByID(RENDER);
         if (renderComponentIndex != -1) {
             entityToSync -> position = nextPhysicsComponent -> position;
-            renderSystem.getComponentByIndex(renderComponentIndex) -> sprite.setPosition(nextPhysicsComponent -> position);
+            renderSystem.syncComponent(renderComponentIndex, nextPhysicsComponent -> position);
         }
     }
 }

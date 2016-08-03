@@ -9,3 +9,7 @@ void RenderSystem::update() {
         window -> draw(renderComponent -> sprite);
     }
 }
+
+void RenderSystem::syncComponent(int componentIndex, const sf::Vector2f& position) {
+    components.at(componentIndex).sprite.setPosition(position);
+}

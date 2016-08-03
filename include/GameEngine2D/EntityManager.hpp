@@ -19,14 +19,15 @@ class EntityManager {
         bool attachComponent(int eID, const Component& component);
         // Remove any kind of component. Return whether it was successfully detached.
         bool detachComponent(int eID, componentID cID);
+        // Entity getters.
+        Entity* getEntity(int eID);
+        Entity* getOwningEntity(const Component& component);
+        Entity* getOwningEntity(const Component* component);
     private:
         std::vector<Entity> entities;
         std::deque<int> freeIDs;
         RenderSystem renderSystem;
         PhysicsSystem physicsSystem;
-        Entity* getEntity(int eID);
-        Entity* getOwningEntity(const Component& component);
-        Entity* getOwningEntity(const Component* component);
         void updateEntity(int eID, componentID cID, int componentIndex);
         void sync();
 };
