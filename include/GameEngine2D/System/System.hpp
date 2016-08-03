@@ -31,8 +31,31 @@ class System {
                 return -1;
             }
         }
+        // Get a pointer to a component.
+        ComponentType* getComponentByIndex(int index) {
+            if (index >= 0 && index < components.size()) {
+                return &components.at(index);
+            } else {
+                return nullptr;
+            }
+        }
+        // Java-Iterator-like functions.
+        bool hasNext() {
+            if (iteratorIndex < components.size()) {
+                return true;
+            } else {
+                iteratorIndex = 0;
+                return false;
+            }
+        }
+        ComponentType* next() {
+            // Get a component and then increment the iterator.
+            return getComponentByIndex(iteratorIndex++);
+        }
     protected:
         std::vector<ComponentType> components;
+    private:
+        int iteratorIndex;
 };
 
 #endif

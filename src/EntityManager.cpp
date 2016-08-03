@@ -9,7 +9,7 @@ int EntityManager::createEntity(const sf::Vector2f& position) {
     if (!freeIDs.empty()) {
         newID = freeIDs.back();
         freeIDs.pop_back();
-        getEntity(newID) = Entity(newID, position);
+        *getEntity(newID) = Entity(newID, position);
     } else {
         newID = entities.size();
         if (newID >= entities.capacity()) {
@@ -22,7 +22,7 @@ int EntityManager::createEntity(const sf::Vector2f& position) {
 
 void EntityManager::destroyEntity(int eID) {
     // Destroy all components.
-    for (std::map<componentID, int>::iterator component = getEntity(eID).components.begin(); component != getEntity(eID).components.end(); ++component) {
+    for (std::map<componentID, int>::iterator component = getEntity(eID) -> components.begin(); component != getEntity(eID) -> components.end(); ++component) {
         detachComponent(eID, component -> first);
     }
     // Push the id to the freelist.
@@ -31,20 +31,22 @@ void EntityManager::destroyEntity(int eID) {
 
 void EntityManager::update(float frametime) {
     renderSystem.update();
+    physicsSystem.update(frametime);
+    sync();
 }
 
 bool EntityManager::attachComponent(int eID, const Component& component) {
     // Only attach if the component does not already exist.
-    if (getEntity(eID).getComponentIndexByID(component.cID) != -1) {
+    if (getEntity(eID) -> getComponentIndexByID(component.cID) != -1) {
         return false;
     }
     // Cast based on what kind of component it is.
     switch (component.cID) {
         case RENDER:
-            getEntity(eID).registerComponent(renderSystem.addComponent(static_cast<const RenderComponent&>(component)));
+            getEntity(eID) -> registerComponent(renderSystem.addComponent(static_cast<const RenderComponent&>(component)));
             break;
         case PHYSICS:
-            getEntity(eID).registerComponent(physicsSystem.addComponent(static_cast<const PhysicsComponent&>(component)));
+            getEntity(eID) -> registerComponent(physicsSystem.addComponent(static_cast<const PhysicsComponent&>(component)));
             break;
     }
     return true;
@@ -52,7 +54,7 @@ bool EntityManager::attachComponent(int eID, const Component& component) {
 
 bool EntityManager::detachComponent(int eID, componentID cID) {
     // Remove it from the entity first, then from the system.
-    int toRemove = getEntity(eID).deregisterComponent(cID);
+    int toRemove = getEntity(eID) -> deregisterComponent(cID);
     // If the entity does not have the component.
     if (toRemove == -1) {
         return false;
@@ -69,16 +71,36 @@ bool EntityManager::detachComponent(int eID, componentID cID) {
     return true;
 }
 
-Entity& EntityManager::getEntity(int eID) {
-    return entities.at(eID);
+Entity* EntityManager::getEntity(int eID) {
+    return &entities.at(eID);
 }
 
-Entity& EntityManager::getOwningEntity(const Component& component) {
+Entity* EntityManager::getOwningEntity(const Component& component) {
     return getEntity(component.eID);
+}
+
+Entity* EntityManager::getOwningEntity(const Component* component) {
+    return getEntity(component -> eID);
 }
 
 void EntityManager::updateEntity(int eID, componentID cID, int componentIndex) {
     if (eID != -1) {
-        getEntity(eID).updateCommponent(cID, componentIndex);
+        getEntity(eID) -> updateCommponent(cID, componentIndex);
+    }
+}
+
+void EntityManager::sync() {
+    PhysicsComponent* nextPhysicsComponent;
+    Entity* entityToSync;
+    int renderComponentIndex;
+    // Sync physics and render systems.
+    while (physicsSystem.hasNext()) {
+        nextPhysicsComponent = physicsSystem.next();
+        entityToSync = getOwningEntity(nextPhysicsComponent);
+        renderComponentIndex = entityToSync -> getComponentIndexByID(RENDER);
+        if (renderComponentIndex != -1) {
+            entityToSync -> position = nextPhysicsComponent -> position;
+            renderSystem.getComponentByIndex(renderComponentIndex) -> sprite.setPosition(nextPhysicsComponent -> position);
+        }
     }
 }

@@ -24,9 +24,11 @@ class EntityManager {
         std::deque<int> freeIDs;
         RenderSystem renderSystem;
         PhysicsSystem physicsSystem;
+        Entity* getEntity(int eID);
+        Entity* getOwningEntity(const Component& component);
+        Entity* getOwningEntity(const Component* component);
         void updateEntity(int eID, componentID cID, int componentIndex);
-        Entity& getEntity(int eID);
-        Entity& getOwningEntity(const Component& component);
+        void sync();
 };
 
 #endif
