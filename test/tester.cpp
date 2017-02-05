@@ -7,13 +7,13 @@ const int WINDOW_Y = 720;
 
 int main() {
     ResourceManager resourceManager = ResourceManager();
-    resourceManager.addResourceDirectory("res/");
+    resourceManager.addResourceDirectory("test/res/");
     sf::RenderWindow window(sf::VideoMode(WINDOW_X, WINDOW_Y), "ECS Test");
     EntityManager entityManager = EntityManager(&window, 100);
-    for (int i = 1; i < 10000; ++i) {
-        int temp = entityManager.createEntity(sf::Vector2f(WINDOW_X * float(rand()) / RAND_MAX, WINDOW_Y * float(rand()) / RAND_MAX));
-        entityManager.attachComponent(temp, RenderComponent(resourceManager.getTexture("player.png")));
-        entityManager.attachComponent(temp, PhysicsComponent(sf::Vector2f(100 * (float(rand()) / RAND_MAX - 0.5), 100 * (float(rand()) / RAND_MAX - 0.5))));
+    for (int i = 1; i < 100000; ++i) {
+        int temp = entityManager.createEntity();
+        entityManager.getEntity(temp).attachComponent(RenderComponent(resourceManager.getTexture("player.png")));
+        entityManager.getEntity(temp).attachComponent(PhysicsComponent(sf::Vector2f(1000 * (float(rand()) / RAND_MAX - 0.5), 1000 * (float(rand()) / RAND_MAX - 0.5))));
     }
     // Remove some entities.
     for (int i = 1; i < 3; ++i) {
