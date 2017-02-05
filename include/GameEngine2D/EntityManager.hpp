@@ -20,9 +20,9 @@ class EntityManager {
         // Remove any kind of component. Return whether it was successfully detached.
         bool detachComponent(int eID, componentID cID);
         // Entity getters.
-        Entity* getEntity(int eID);
-        Entity* getOwningEntity(const Component& component);
-        Entity* getOwningEntity(const Component* component);
+        Entity& getEntity(int eID);
+        Entity& getOwningEntity(const Component& component);
+        Entity& getOwningEntity(const Component* component);
     private:
         std::vector<Entity> entities;
         std::deque<int> freeIDs;

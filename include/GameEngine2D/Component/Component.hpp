@@ -9,6 +9,10 @@ enum componentID {
 class Component {
     public:
         Component(componentID id);
+        int getComponentID();
+        int getOwningEntityID();
+        void setOwningEntityID(int eID);
+    private:
         componentID cID;
         int eID;
 };

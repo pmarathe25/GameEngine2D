@@ -7,10 +7,23 @@ Entity::Entity(int eID, const sf::Vector2f& position) {
     this -> position = position;
 }
 
-int Entity::getComponentIndexByID(componentID id) {
-    if (components.count(id) > 0) {
-        return components.at(id);
+int Entity::getComponentIndexByID(componentID cID) {
+    if (components.count(cID) > 0) {
+        return components.at(cID);
     } else {
         return -1;
     }
+}
+
+bool Entity::registerComponent(componentID cID, int componentIndex) {
+    if (components.count(cID) > 0) {
+        return false;
+    } else {
+        components[cID] = componentIndex;
+        return true;
+    }
+}
+
+sf::Vector2f& Entity::position() {
+    return position;
 }
