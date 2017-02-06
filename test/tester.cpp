@@ -12,8 +12,8 @@ int main() {
     EntityManager entityManager = EntityManager(&window, 100);
     for (int i = 1; i < 100000; ++i) {
         int temp = entityManager.createEntity();
-        entityManager.attachComponent(temp, RenderComponent(resourceManager.getTexture("player.png"));
-        entityManager.attachComponent(temp, PhysicsComponent(sf::Vector2f(1000 * (float(rand()) / RAND_MAX - 0.5), 1000 * (float(rand()) / RAND_MAX - 0.5)));
+        entityManager.attachComponent(temp, RenderComponent(resourceManager.getTexture("player.png")));
+        entityManager.attachComponent(temp, PhysicsComponent(sf::Vector2f(1000 * (float(rand()) / RAND_MAX - 0.5), 1000 * (float(rand()) / RAND_MAX - 0.5)), sf::Vector2f(1000 * (float(rand()) / RAND_MAX - 0.5), 1000 * (float(rand()) / RAND_MAX - 0.5))));
     }
     // Remove some entities.
     // for (int i = 1; i < 3; ++i) {

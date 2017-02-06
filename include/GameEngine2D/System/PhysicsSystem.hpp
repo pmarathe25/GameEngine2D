@@ -8,7 +8,6 @@
 class PhysicsSystem : public System<PhysicsComponent> {
     public:
         PhysicsSystem(int expectedNumEntities);
-        int addComponent(const ComponentType& newComponent, const sf::Vector2f& position);
         void update(float frametime);
 };
 

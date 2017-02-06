@@ -6,8 +6,6 @@
 class RenderComponent : public Component {
     public:
         RenderComponent(const sf::Texture& texture);
-        void setPosition(const sf::Vector2f& position);
-    private:
         sf::Sprite sprite;
 };
 

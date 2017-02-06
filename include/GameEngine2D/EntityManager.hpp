@@ -12,7 +12,7 @@
 class EntityManager {
     public:
         EntityManager(sf::RenderWindow* window, int expectedNumEntities = 10);
-        int createEntity(const sf::Vector2f& position = sf::Vector2f(0, 0));
+        int createEntity();
         void destroyEntity(int eID);
         void update(float frametime);
         // Attach a component of any kind. Return whether it was successfully attached.

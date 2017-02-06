@@ -29,13 +29,9 @@ class System {
                 return -1;
             }
         }
-        // Get a pointer to a component.
-        const ComponentType& getComponent(int index) {
-            if (index >= 0 && index < components.size()) {
-                return components.at(index);
-            } else {
-                return nullptr;
-            }
+        // Get a reference to a component.
+        ComponentType& getComponent(int index) {
+            return components[index];
         }
         int size() {
             return components.size();

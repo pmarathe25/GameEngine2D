@@ -4,14 +4,14 @@ Component::Component(componentID id) {
     cID = id;
 }
 
-int Component::getComponentID() {
+int Component::getComponentID() const {
     return cID;
 }
 
-int Component::getOwningEntityID() {
+int Component::getOwningEntityID() const {
     return eID;
 }
 
-void setOwningEntityID(int eID) {
+void Component::setOwningEntityID(int eID) {
     this -> eID = eID;
 }

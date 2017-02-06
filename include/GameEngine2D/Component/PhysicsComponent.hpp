@@ -5,9 +5,7 @@
 
 class PhysicsComponent : public Component {
     public:
-        PhysicsComponent(const sf::Vector2f& velocity);
-        void setPosition(const sf::Vector2f& position);
-    private:
+        PhysicsComponent(const sf::Vector2f& position, const sf::Vector2f& velocity = sf::Vector2f(0, 0));
         sf::Vector2f position;
         sf::Vector2f velocity;
 };

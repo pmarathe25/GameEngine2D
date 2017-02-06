@@ -2,7 +2,6 @@ BUILDDIR = build/
 INCLUDEDIR = include/
 SRCDIR = src/
 TESTDIR = test/
-BIN = bin/
 LIBDIR = lib/
 LIBS =
 OBJS = $(BUILDDIR)/Component.o $(BUILDDIR)/EntityManager.o $(BUILDDIR)/Entity.o $(BUILDDIR)/ResourceManager.o \
@@ -12,8 +11,8 @@ CXX = g++
 CFLAGS = -fPIC -c -I$(INCLUDEDIR) -std=c++11
 LFLAGS = -lsfml-graphics -lsfml-window -lsfml-system
 
-$(BIN)/test: $(OBJS) $(TESTOBJS)
-	$(CXX) $(OBJS) $(TESTOBJS) -o $(BIN)/test $(LFLAGS)
+$(TESTDIR)/test: $(OBJS) $(TESTOBJS)
+	$(CXX) $(OBJS) $(TESTOBJS) -o $(TESTDIR)/test $(LFLAGS)
 
 $(BUILDDIR)/tester.o: $(TESTDIR)/tester.cpp $(INCLUDEDIR)/GameEngine2D/EntityManager.hpp $(INCLUDEDIR)/GameEngine2D/Entity/Entity.hpp \
 	$(INCLUDEDIR)/GameEngine2D/Component/Component.hpp $(INCLUDEDIR)/GameEngine2D/Component/RenderComponent.hpp $(INCLUDEDIR)/GameEngine2D/System/RenderSystem.hpp
@@ -50,3 +49,6 @@ $(BUILDDIR)/PhysicsSystem.o: $(SRCDIR)/System/PhysicsSystem.cpp $(INCLUDEDIR)/Ga
 
 clean:
 	rm $(OBJS)
+
+test: $(TESTDIR)/test
+	$(TESTDIR)/test
