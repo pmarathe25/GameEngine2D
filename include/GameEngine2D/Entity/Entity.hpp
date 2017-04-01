@@ -2,21 +2,21 @@
 #define ENTITY_H
 #include "GameEngine2D/Component/Component.hpp"
 #include <SFML/Graphics.hpp>
+#include <string>
 #include <map>
-#include <utility>
 
 class Entity {
     public:
         Entity() {};
         // Get any type of component.
-        int getComponentIndexByID(componentID cID);
+        int getComponentIndexByID(int cID);
         // Register a component with this entity and returns whether it successfully registered.
-        bool registerComponent(componentID cID, int componentIndex);
-        int deregisterComponent(componentID cID);
-        void updateCommponent(componentID cID, int index);
+        bool registerComponent(int cID, int componentIndex);
+        int deregisterComponent(int cID);
+        void updateCommponent(int cID, int index);
     private:
         // Data members.
-        std::map<componentID, int> components;
+        std::map<int, int> components;
 };
 
 #endif

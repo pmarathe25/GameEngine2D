@@ -36,7 +36,7 @@ $(BUILDDIR)/RenderComponent.o: $(SRCDIR)/Component/RenderComponent.cpp $(INCLUDE
 	$(CXX) $(CFLAGS) $(SRCDIR)/Component/RenderComponent.cpp -o $(BUILDDIR)/RenderComponent.o
 
 $(BUILDDIR)/RenderSystem.o: $(SRCDIR)/System/RenderSystem.cpp $(INCLUDEDIR)/GameEngine2D/System/RenderSystem.hpp \
-	$(INCLUDEDIR)/GameEngine2D/Component/RenderComponent.hpp $(INCLUDEDIR)/GameEngine2D/System/System.hpp
+	$(INCLUDEDIR)/GameEngine2D/Component/RenderComponent.hpp $(INCLUDEDIR)/GameEngine2D/System/SystemType.hpp
 	$(CXX) $(CFLAGS) $(SRCDIR)/System/RenderSystem.cpp -o $(BUILDDIR)/RenderSystem.o
 
 $(BUILDDIR)/PhysicsComponent.o: $(SRCDIR)/Component/PhysicsComponent.cpp $(INCLUDEDIR)/GameEngine2D/Component/PhysicsComponent.hpp \
@@ -44,7 +44,7 @@ $(BUILDDIR)/PhysicsComponent.o: $(SRCDIR)/Component/PhysicsComponent.cpp $(INCLU
 	$(CXX) $(CFLAGS) $(SRCDIR)/Component/PhysicsComponent.cpp -o $(BUILDDIR)/PhysicsComponent.o
 
 $(BUILDDIR)/PhysicsSystem.o: $(SRCDIR)/System/PhysicsSystem.cpp $(INCLUDEDIR)/GameEngine2D/System/PhysicsSystem.hpp \
-	$(INCLUDEDIR)/GameEngine2D/Component/PhysicsComponent.hpp $(INCLUDEDIR)/GameEngine2D/System/System.hpp
+	$(INCLUDEDIR)/GameEngine2D/Component/PhysicsComponent.hpp $(INCLUDEDIR)/GameEngine2D/System/SystemType.hpp
 	$(CXX) $(CFLAGS) $(SRCDIR)/System/PhysicsSystem.cpp -o $(BUILDDIR)/PhysicsSystem.o
 
 clean:

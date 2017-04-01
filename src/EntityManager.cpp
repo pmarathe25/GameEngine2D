@@ -1,7 +1,7 @@
 #include "GameEngine2D/EntityManager.hpp"
 
-EntityManager::EntityManager(sf::RenderWindow* window, int expectedNumEntities) : renderSystem(window, expectedNumEntities), physicsSystem(expectedNumEntities) {
-    entities.reserve(expectedNumEntities);
+EntityManager::EntityManager() {
+
 }
 
 int EntityManager::createEntity() {
@@ -20,23 +20,13 @@ int EntityManager::createEntity() {
 void EntityManager::destroyEntity(int eID) {
     // Push the id to the freelist.
     freeIDs.push_back(eID);
+    // TODO: Detach all components.
 }
 
 void EntityManager::update(float frametime) {
-    physicsSystem.update(frametime);
-    sync();
-    renderSystem.update();
-}
-
-bool EntityManager::attachComponent(int eID, const Component& component) {
-    switch (component.getComponentID()) {
-        case RENDER:
-            getEntity(eID).registerComponent(RENDER, renderSystem.addComponent(static_cast<const RenderComponent&>(component), eID));
-            break;
-        case PHYSICS:
-            getEntity(eID).registerComponent(PHYSICS, physicsSystem.addComponent(static_cast<const PhysicsComponent&>(component), eID));
-            break;
-    }
+    // physicsSystem.update(frametime);
+    // sync();
+    // renderSystem.update();
 }
 
 Entity& EntityManager::getEntity(int eID) {
@@ -45,7 +35,7 @@ Entity& EntityManager::getEntity(int eID) {
 
 
 void EntityManager::sync() {
-    for (int i = 0; i < physicsSystem.size(); ++i) {
-        renderSystem.getComponent(getEntity(physicsSystem.getComponent(i).getOwningEntityID()).getComponentIndexByID(RENDER)).sprite.setPosition(physicsSystem.getComponent(i).position);
-    }
+    // for (int i = 0; i < physicsSystem.size(); ++i) {
+    //     renderSystem.getComponent(getEntity(physicsSystem.getComponent(i).getOwningEntityID()).getComponentIndexByID(RENDER)).sprite.setPosition(physicsSystem.getComponent(i).position);
+    // }
 }

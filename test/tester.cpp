@@ -1,5 +1,7 @@
 #include "GameEngine2D/ResourceManager.hpp"
 #include "GameEngine2D/EntityManager.hpp"
+#include "GameEngine2D/System/RenderSystem.hpp"
+#include "GameEngine2D/System/PhysicsSystem.hpp"
 #include <iostream>
 
 const int WINDOW_X = 1280;
@@ -9,11 +11,13 @@ int main() {
     ResourceManager resourceManager = ResourceManager();
     resourceManager.addResourceDirectory("test/res/");
     sf::RenderWindow window(sf::VideoMode(WINDOW_X, WINDOW_Y), "ECS Test");
-    EntityManager entityManager = EntityManager(&window, 100);
-    for (int i = 1; i < 100000; ++i) {
+    EntityManager entityManager = EntityManager();
+    PhysicsSystem physicsSystem = PhysicsSystem(entityManager);
+    RenderSystem renderSystem = RenderSystem(entityManager, &window, &physicsSystem);
+    for (int i = 1; i < 50000; ++i) {
         int temp = entityManager.createEntity();
-        entityManager.attachComponent(temp, RenderComponent(resourceManager.getTexture("player.png")));
-        entityManager.attachComponent(temp, PhysicsComponent(sf::Vector2f(1000 * (float(rand()) / RAND_MAX - 0.5), 1000 * (float(rand()) / RAND_MAX - 0.5)), sf::Vector2f(1000 * (float(rand()) / RAND_MAX - 0.5), 1000 * (float(rand()) / RAND_MAX - 0.5))));
+        renderSystem.addComponent(temp, RenderComponent(resourceManager.getTexture("player.png")));
+        physicsSystem.addComponent(temp, PhysicsComponent(sf::Vector2f(1000 * (float(rand()) / RAND_MAX - 0.5), 1000 * (float(rand()) / RAND_MAX - 0.5)), sf::Vector2f(1000 * (float(rand()) / RAND_MAX - 0.5), 1000 * (float(rand()) / RAND_MAX - 0.5))));
     }
     // Remove some entities.
     // for (int i = 1; i < 3; ++i) {
@@ -36,6 +40,8 @@ int main() {
         std::cout << (1 / frametime) << std::endl;
         window.clear(sf::Color::White);
         entityManager.update(frametime);
+        physicsSystem.update(frametime);
+        renderSystem.update(frametime);
         window.display();
     }
 }

@@ -1,11 +1,6 @@
 #include "GameEngine2D/Component/Component.hpp"
 
-Component::Component(componentID id) {
-    cID = id;
-}
-
-int Component::getComponentID() const {
-    return cID;
+Component::Component() {
 }
 
 int Component::getOwningEntityID() const {

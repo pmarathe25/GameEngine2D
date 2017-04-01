@@ -2,7 +2,7 @@
 #include "GameEngine2D/Component/RenderComponent.hpp"
 #include "GameEngine2D/Component/PhysicsComponent.hpp"
 
-int Entity::getComponentIndexByID(componentID cID) {
+int Entity::getComponentIndexByID(int cID) {
     if (components.count(cID) > 0) {
         return components.at(cID);
     } else {
@@ -10,7 +10,7 @@ int Entity::getComponentIndexByID(componentID cID) {
     }
 }
 
-bool Entity::registerComponent(componentID cID, int componentIndex) {
+bool Entity::registerComponent(int cID, int componentIndex) {
     if (components.count(cID) > 0) {
         return false;
     } else {
