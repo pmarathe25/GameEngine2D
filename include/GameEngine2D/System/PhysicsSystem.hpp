@@ -7,9 +7,8 @@
 
 class PhysicsSystem : public SystemType<PhysicsComponent> {
     public:
-        PhysicsSystem(EntityManager& entityManager);
+        PhysicsSystem(int systemID, EntityManager& entityManager);
         void update(float frametime);
-        int getSystemType();
 };
 
 #endif

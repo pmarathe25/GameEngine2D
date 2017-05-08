@@ -12,12 +12,14 @@ int main() {
     resourceManager.addResourceDirectory("test/res/");
     sf::RenderWindow window(sf::VideoMode(WINDOW_X, WINDOW_Y), "ECS Test");
     EntityManager entityManager = EntityManager();
-    PhysicsSystem physicsSystem = PhysicsSystem(entityManager);
-    RenderSystem renderSystem = RenderSystem(entityManager, &window, &physicsSystem);
+    PhysicsSystem physicsSystem = PhysicsSystem(0, entityManager);
+    RenderSystem renderSystem = RenderSystem(1, entityManager, &window, &physicsSystem);
     for (int i = 1; i < 50000; ++i) {
         int temp = entityManager.createEntity();
         renderSystem.addComponent(temp, RenderComponent(resourceManager.getTexture("player.png")));
-        physicsSystem.addComponent(temp, PhysicsComponent(sf::Vector2f(1000 * (float(rand()) / RAND_MAX - 0.5), 1000 * (float(rand()) / RAND_MAX - 0.5)), sf::Vector2f(1000 * (float(rand()) / RAND_MAX - 0.5), 1000 * (float(rand()) / RAND_MAX - 0.5))));
+        physicsSystem.addComponent(temp, PhysicsComponent(sf::Vector2f(1000 * (float(rand()) / RAND_MAX - 0.5), 1000
+            * (float(rand()) / RAND_MAX - 0.5)), sf::Vector2f(1000 * (float(rand()) / RAND_MAX - 0.5), 1000
+            * (float(rand()) / RAND_MAX - 0.5))));
     }
     // Remove some entities.
     // for (int i = 1; i < 3; ++i) {
@@ -39,7 +41,6 @@ int main() {
         float frametime = clock.restart().asSeconds();
         std::cout << (1 / frametime) << std::endl;
         window.clear(sf::Color::White);
-        entityManager.update(frametime);
         physicsSystem.update(frametime);
         renderSystem.update(frametime);
         window.display();

@@ -1,24 +1,19 @@
 #include "GameEngine2D/System/RenderSystem.hpp"
 
-RenderSystem::RenderSystem(EntityManager& entityManager, sf::RenderWindow* window, PhysicsSystem* physicsSystem) : SystemType<RenderComponent>(entityManager) {
+RenderSystem::RenderSystem(int systemID, EntityManager& entityManager, sf::RenderWindow* window, PhysicsSystem* physicsSystem) : SystemType<RenderComponent>(entityManager, systemID) {
     this -> window = window;
     this -> physicsSystem = physicsSystem;
-    systemType = 1;
 }
 
 void RenderSystem::update(float frametime) {
     for (std::vector<RenderComponent>::iterator renderComponent = components.begin(); renderComponent != components.end(); ++renderComponent) {
         if (physicsSystem != 0) {
-            renderComponent -> sprite.setPosition(physicsSystem -> getComponentByOwningEntityID(renderComponent -> getOwningEntityID()).position);
+            renderComponent -> sprite.setPosition(physicsSystem -> getComponentByMatchingComponent(*renderComponent).position);
         }
         if (!isOffScreen(renderComponent -> sprite.getPosition(), renderComponent -> sprite.getTexture() -> getSize())) {
             window -> draw(renderComponent -> sprite);
         }
     }
-}
-
-int RenderSystem::getSystemType() {
-    return systemType;
 }
 
 bool RenderSystem::isOffScreen(const sf::Vector2f& position, const sf::Vector2u& size) {

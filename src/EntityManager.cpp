@@ -23,12 +23,6 @@ void EntityManager::destroyEntity(int eID) {
     // TODO: Detach all components.
 }
 
-void EntityManager::update(float frametime) {
-    // physicsSystem.update(frametime);
-    // sync();
-    // renderSystem.update();
-}
-
 Entity& EntityManager::getEntity(int eID) {
     return entities[eID];
 }
