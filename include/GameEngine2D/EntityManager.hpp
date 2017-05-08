@@ -20,6 +20,7 @@ class EntityManager {
         Entity& getEntity(const Component* component);
     private:
         std::vector<Entity> entities;
+        
         std::deque<int> freeIDs;
         void updateEntity(int eID, std::string cID, int componentIndex);
 };
