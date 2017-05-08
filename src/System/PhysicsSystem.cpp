@@ -1,6 +1,6 @@
 #include "GameEngine2D/System/PhysicsSystem.hpp"
 
-PhysicsSystem::PhysicsSystem(int systemID, EntityManager& entityManager) : SystemType<PhysicsComponent>(entityManager, systemID) {
+PhysicsSystem::PhysicsSystem(int systemID, EntityManager& entityManager) : System<PhysicsComponent>(entityManager, systemID) {
 }
 
 

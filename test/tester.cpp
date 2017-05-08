@@ -14,12 +14,14 @@ int main() {
     EntityManager entityManager = EntityManager();
     PhysicsSystem physicsSystem = PhysicsSystem(0, entityManager);
     RenderSystem renderSystem = RenderSystem(1, entityManager, &window, &physicsSystem);
-    for (int i = 1; i < 50000; ++i) {
+    for (int i = 0; i < 50000; ++i) {
         int temp = entityManager.createEntity();
         renderSystem.addComponent(temp, RenderComponent(resourceManager.getTexture("player.png")));
-        physicsSystem.addComponent(temp, PhysicsComponent(sf::Vector2f(1000 * (float(rand()) / RAND_MAX - 0.5), 1000
-            * (float(rand()) / RAND_MAX - 0.5)), sf::Vector2f(1000 * (float(rand()) / RAND_MAX - 0.5), 1000
-            * (float(rand()) / RAND_MAX - 0.5))));
+    }
+    for (int i = 0; i < 49000; ++i) {
+        physicsSystem.addComponent(i, PhysicsComponent(sf::Vector2f(1000 * (float(rand()) / RAND_MAX - 0.5), 1000
+        * (float(rand()) / RAND_MAX - 0.5)), sf::Vector2f(1000 * (float(rand()) / RAND_MAX - 0.5), 1000
+        * (float(rand()) / RAND_MAX - 0.5))));
     }
     // Remove some entities.
     // for (int i = 1; i < 3; ++i) {

@@ -1,6 +1,6 @@
 #include "GameEngine2D/System/RenderSystem.hpp"
 
-RenderSystem::RenderSystem(int systemID, EntityManager& entityManager, sf::RenderWindow* window, PhysicsSystem* physicsSystem) : SystemType<RenderComponent>(entityManager, systemID) {
+RenderSystem::RenderSystem(int systemID, EntityManager& entityManager, sf::RenderWindow* window, PhysicsSystem* physicsSystem) : System<RenderComponent>(entityManager, systemID) {
     this -> window = window;
     this -> physicsSystem = physicsSystem;
 }
@@ -8,7 +8,10 @@ RenderSystem::RenderSystem(int systemID, EntityManager& entityManager, sf::Rende
 void RenderSystem::update(float frametime) {
     for (std::vector<RenderComponent>::iterator renderComponent = components.begin(); renderComponent != components.end(); ++renderComponent) {
         if (physicsSystem != 0) {
-            renderComponent -> sprite.setPosition(physicsSystem -> getComponentByMatchingComponent(*renderComponent).position);
+            PhysicsComponent* temp = physicsSystem -> getComponentByMatchingComponent(*renderComponent);
+            if (temp != NULL) {
+                renderComponent -> sprite.setPosition(temp -> position);
+            }
         }
         if (!isOffScreen(renderComponent -> sprite.getPosition(), renderComponent -> sprite.getTexture() -> getSize())) {
             window -> draw(renderComponent -> sprite);
