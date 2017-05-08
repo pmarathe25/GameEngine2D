@@ -26,10 +26,3 @@ void EntityManager::destroyEntity(int eID) {
 Entity& EntityManager::getEntity(int eID) {
     return entities[eID];
 }
-
-
-void EntityManager::sync() {
-    // for (int i = 0; i < physicsSystem.size(); ++i) {
-    //     renderSystem.getComponent(getEntity(physicsSystem.getComponent(i).getOwningEntityID()).getComponentIndexByID(RENDER)).sprite.setPosition(physicsSystem.getComponent(i).position);
-    // }
-}

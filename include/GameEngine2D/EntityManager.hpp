@@ -22,7 +22,6 @@ class EntityManager {
         std::vector<Entity> entities;
         std::deque<int> freeIDs;
         void updateEntity(int eID, std::string cID, int componentIndex);
-        void sync();
 };
 
 #endif
