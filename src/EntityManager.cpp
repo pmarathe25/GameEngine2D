@@ -26,3 +26,11 @@ void EntityManager::destroyEntity(int eID) {
 Entity& EntityManager::getEntity(int eID) {
     return entities[eID];
 }
+
+Entity& EntityManager::getEntity(const Component& component) {
+    return entities[component.getOwningEntityID()];
+}
+
+Entity& EntityManager::getEntity(const Component* component) {
+    return entities[component -> getOwningEntityID()];
+}

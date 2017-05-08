@@ -44,7 +44,7 @@ class SystemType : public System {
             return components[entityManager -> getEntity(eid).getComponentIndexByID(getSystemID())];
         }
         ComponentType& getComponentByMatchingComponent(Component& component) {
-            return components[entityManager -> getEntity(component.getOwningEntityID()).getComponentIndexByID(getSystemID())];
+            return components[entityManager -> getEntity(component).getComponentIndexByID(getSystemID())];
         }
         int size() {
             return components.size();

@@ -16,8 +16,8 @@ class EntityManager {
         void destroyEntity(int eID);
         // Entity getters.
         Entity& getEntity(int eID);
-        Entity& getOwningEntity(const Component& component);
-        Entity& getOwningEntity(const Component* component);
+        Entity& getEntity(const Component& component);
+        Entity& getEntity(const Component* component);
     private:
         std::vector<Entity> entities;
         std::deque<int> freeIDs;
