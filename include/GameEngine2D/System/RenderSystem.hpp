@@ -8,7 +8,7 @@
 
 class RenderSystem : public System<RenderComponent> {
     public:
-        RenderSystem(int systemID, EntityManager& entityManager, sf::RenderWindow* window, PhysicsSystem* physicsSystem = 0);
+        RenderSystem(int systemID, EntityManager& entityManager, sf::RenderWindow* window, PhysicsSystem* physicsSystem = NULL);
         void update(float frametime);
     private:
         bool isOffScreen(const sf::Vector2f& position, const sf::Vector2u& size);
