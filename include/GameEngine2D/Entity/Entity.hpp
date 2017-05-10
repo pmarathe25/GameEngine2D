@@ -7,7 +7,7 @@
 
 class Entity {
     public:
-        Entity() {};
+        Entity();
         // Get any type of component.
         int getComponentIndexByID(int cID);
         // Register a component with this entity and returns whether it successfully registered.

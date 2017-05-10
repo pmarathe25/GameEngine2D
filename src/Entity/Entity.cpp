@@ -2,6 +2,11 @@
 #include "GameEngine2D/Component/RenderComponent.hpp"
 #include "GameEngine2D/Component/PhysicsComponent.hpp"
 
+Entity::Entity() {
+    
+}
+
+
 int Entity::getComponentIndexByID(int cID) {
     if (components.count(cID) > 0) {
         return components[cID];
