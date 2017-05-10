@@ -1,4 +1,4 @@
-#include "GameEngine2D/EntityManager.hpp"
+#include "GameEngine2D/Entity/EntityManager.hpp"
 
 EntityManager::EntityManager() {
 
@@ -15,12 +15,6 @@ int EntityManager::createEntity() {
         entities.push_back(Entity());
     }
     return newID;
-}
-
-void EntityManager::destroyEntity(int eID) {
-    // Push the id to the freelist.
-    freeIDs.push_back(eID);
-    // TODO: Detach all components.
 }
 
 Entity& EntityManager::getEntity(int eID) {

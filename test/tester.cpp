@@ -1,5 +1,5 @@
 #include "GameEngine2D/ResourceManager.hpp"
-#include "GameEngine2D/EntityManager.hpp"
+#include "GameEngine2D/Entity/EntityManager.hpp"
 #include "GameEngine2D/System/RenderSystem.hpp"
 #include "GameEngine2D/System/PhysicsSystem.hpp"
 #include <iostream>

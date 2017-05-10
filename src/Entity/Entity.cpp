@@ -18,3 +18,11 @@ bool Entity::registerComponent(int cID, int componentIndex) {
         return true;
     }
 }
+
+int Entity::deregisterComponent(int cID) {
+    components.erase(cID);
+}
+
+void Entity::updateCommponent(int cID, int index) {
+    components[cID] = index;
+}
