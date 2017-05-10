@@ -17,6 +17,7 @@ class EntityManager {
         Entity& getEntity(int eID);
         Entity& getEntity(const Component& component);
         Entity& getEntity(const Component* component);
+        
     private:
         std::vector<Entity> entities;
         std::deque<int> freeIDs;

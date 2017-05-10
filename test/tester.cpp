@@ -18,7 +18,7 @@ int main() {
         int temp = entityManager.createEntity();
         renderSystem.addComponent(temp, RenderComponent(resourceManager.getTexture("player.png")));
     }
-    for (int i = 0; i < 49000; ++i) {
+    for (int i = 0; i < 50000; ++i) {
         physicsSystem.addComponent(i, PhysicsComponent(sf::Vector2f(1000 * (float(rand()) / RAND_MAX - 0.5), 1000
         * (float(rand()) / RAND_MAX - 0.5)), sf::Vector2f(1000 * (float(rand()) / RAND_MAX - 0.5), 1000
         * (float(rand()) / RAND_MAX - 0.5))));
@@ -27,10 +27,10 @@ int main() {
     // for (int i = 1; i < 3; ++i) {
     //     entityManager.destroyEntity(i);
     // }
-    // // Remove some components.
-    // for (int i = 3; i < 10; ++i) {
-    //     entityManager.detachComponent(i, RENDER);
-    // }
+    // Remove some components.
+    for (int i = 0; i < 50000; ++i) {
+        physicsSystem.removeComponent(i);
+    }
     sf::Clock clock;
     while (window.isOpen()) {
         // Handle events.

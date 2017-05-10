@@ -4,7 +4,7 @@
 
 int Entity::getComponentIndexByID(int cID) {
     if (components.count(cID) > 0) {
-        return components.at(cID);
+        return components[cID];
     } else {
         return -1;
     }

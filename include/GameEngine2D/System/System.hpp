@@ -28,7 +28,7 @@ class System : public SystemParent {
         // Remove a component from the system and returns the eID of the owning entity of the other modified component.
         void removeComponent(int eid, bool entityDestroyed = false) {
             // Return the index of the other entity that was modified.
-            Entity* entity = entityManager -> getEntity(eid);
+            Entity* entity = &(entityManager -> getEntity(eid));
             int componentIndex = entity -> getComponentIndexByID(getSystemID());
             if (componentIndex != -1) {
                 if (!entityDestroyed) {
