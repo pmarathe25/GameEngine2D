@@ -17,24 +17,20 @@ int main() {
     RenderSystem renderSystem = RenderSystem(1, entityManager, &window, &physicsSystem);
     // Register systems with the EntityManager.
     entityManager.registerSystems({&physicsSystem, &renderSystem});
+    // Create some entities.
     for (int i = 0; i < 50000; ++i) {
         int temp = entityManager.createEntity();
         renderSystem.addComponent(temp, RenderComponent(resourceManager.getTexture("player.png")));
-    }
-    for (int i = 0; i < 50000; ++i) {
-        physicsSystem.addComponent(i, PhysicsComponent(sf::Vector2f(1000 * (float(rand()) / RAND_MAX - 0.5), 1000
-        * (float(rand()) / RAND_MAX - 0.5)), sf::Vector2f(1000 * (float(rand()) / RAND_MAX - 0.5), 1000
-        * (float(rand()) / RAND_MAX - 0.5))));
+        physicsSystem.addComponent(temp, PhysicsComponent(sf::Vector2f(1000 * (float(rand()) / RAND_MAX - 0.5), 1000
+            * (float(rand()) / RAND_MAX - 0.5)), sf::Vector2f(1000 * (float(rand()) / RAND_MAX - 0.5), 1000
+            * (float(rand()) / RAND_MAX - 0.5))));
     }
     // Remove some entities.
-    for (int i = 0; i < 49000; ++i) {
+    for (int i = 49000; i >= 0; --i) {
         entityManager.destroyEntity(i);
     }
     // Remove some components.
     // for (int i = 0; i < 49000; ++i) {
-    //     physicsSystem.removeComponentByEntityID(i);
-    // }
-    // for (int i = 49999; i >= 0; --i) {
     //     physicsSystem.removeComponentByEntityID(i);
     // }
     sf::Clock clock;
