@@ -31,6 +31,9 @@ int main() {
     for (int i = 0; i < 50000; ++i) {
         physicsSystem.removeComponent(i);
     }
+    // for (int i = 49999; i >= 0; --i) {
+    //     physicsSystem.removeComponent(i);
+    // }
     sf::Clock clock;
     while (window.isOpen()) {
         // Handle events.

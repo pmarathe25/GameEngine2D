@@ -35,10 +35,12 @@ class System : public SystemParent {
                     // First remove the component from the entity if the entity is not being destroyed.
                     entity -> deregisterComponent(getSystemID());
                 }
-                // Swap the component to remove with the last component and update the entity of the swapped component.
-                components[componentIndex] = components.back();
+                if (componentIndex != size() - 1 && size() > 1) {
+                    // Swap the component to remove with the last component and update the entity of the swapped component.
+                    components[componentIndex] = components.back();
+                    entityManager -> getEntity(components[componentIndex]).updateCommponent(getSystemID(), componentIndex);
+                }
                 components.pop_back();
-                entityManager -> getEntity(components[componentIndex]).updateCommponent(getSystemID(), componentIndex);
             }
         }
 
