@@ -9,11 +9,15 @@ class Entity {
     public:
         Entity();
         // Get any type of component.
-        int getComponentIndexByID(int cID);
+        int getComponentIndexByID(int systemID);
         // Register a component with this entity and returns whether it successfully registered.
-        bool registerComponent(int cID, int componentIndex);
-        int deregisterComponent(int cID);
-        void updateCommponent(int cID, int index);
+        bool registerComponent(int systemID, int componentIndex);
+        // Remove a component.
+        int deregisterComponent(int systemID);
+        // Update an exsiting component's index.
+        void updateCommponent(int systemID, int index);
+        // Get the component map.
+        std::map<int, int>& getComponentMap();
     private:
         // Data members.
         std::map<int, int> components;

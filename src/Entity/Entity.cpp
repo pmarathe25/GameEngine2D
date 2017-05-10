@@ -3,31 +3,34 @@
 #include "GameEngine2D/Component/PhysicsComponent.hpp"
 
 Entity::Entity() {
-    
+
 }
 
-
-int Entity::getComponentIndexByID(int cID) {
-    if (components.count(cID) > 0) {
-        return components[cID];
+int Entity::getComponentIndexByID(int systemID) {
+    if (components.count(systemID) > 0) {
+        return components[systemID];
     } else {
         return -1;
     }
 }
 
-bool Entity::registerComponent(int cID, int componentIndex) {
-    if (components.count(cID) > 0) {
+bool Entity::registerComponent(int systemID, int componentIndex) {
+    if (components.count(systemID) > 0) {
         return false;
     } else {
-        components[cID] = componentIndex;
+        components[systemID] = componentIndex;
         return true;
     }
 }
 
-int Entity::deregisterComponent(int cID) {
-    components.erase(cID);
+int Entity::deregisterComponent(int systemID) {
+    components.erase(systemID);
 }
 
-void Entity::updateCommponent(int cID, int index) {
-    components[cID] = index;
+void Entity::updateCommponent(int systemID, int index) {
+    components[systemID] = index;
+}
+
+std::map<int, int>& Entity::getComponentMap() {
+    return components;
 }

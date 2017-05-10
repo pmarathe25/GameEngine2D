@@ -12,8 +12,11 @@ int main() {
     resourceManager.addResourceDirectory("test/res/");
     sf::RenderWindow window(sf::VideoMode(WINDOW_X, WINDOW_Y), "ECS Test");
     EntityManager entityManager = EntityManager();
+    // Create some systems.
     PhysicsSystem physicsSystem = PhysicsSystem(0, entityManager);
     RenderSystem renderSystem = RenderSystem(1, entityManager, &window, &physicsSystem);
+    // Register systems with the EntityManager.
+    entityManager.registerSystems({&physicsSystem, &renderSystem});
     for (int i = 0; i < 50000; ++i) {
         int temp = entityManager.createEntity();
         renderSystem.addComponent(temp, RenderComponent(resourceManager.getTexture("player.png")));
@@ -24,15 +27,15 @@ int main() {
         * (float(rand()) / RAND_MAX - 0.5))));
     }
     // Remove some entities.
-    // for (int i = 1; i < 3; ++i) {
+    // for (int i = 0; i < 49000; ++i) {
     //     entityManager.destroyEntity(i);
     // }
     // Remove some components.
-    for (int i = 0; i < 50000; ++i) {
-        physicsSystem.removeComponent(i);
+    for (int i = 0; i < 49000; ++i) {
+        physicsSystem.removeComponentByEntityID(i);
     }
     // for (int i = 49999; i >= 0; --i) {
-    //     physicsSystem.removeComponent(i);
+    //     physicsSystem.removeComponentByEntityID(i);
     // }
     sf::Clock clock;
     while (window.isOpen()) {

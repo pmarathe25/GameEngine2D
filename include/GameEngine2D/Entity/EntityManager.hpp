@@ -9,18 +9,22 @@
 #include <vector>
 #include <deque>
 
+class SystemParent;
+
 class EntityManager {
     public:
         EntityManager();
         int createEntity();
-        // Entity getters.
+        void destroyEntity(int eID);
+        void registerSystems(std::vector<SystemParent*> unregisteredSystems);
         Entity& getEntity(int eID);
         Entity& getEntity(const Component& component);
         Entity& getEntity(const Component* component);
-        
+
     private:
         std::vector<Entity> entities;
         std::deque<int> freeIDs;
+        std::map <int, SystemParent*> systems;
         void updateEntity(int eID, std::string cID, int componentIndex);
 };
 
