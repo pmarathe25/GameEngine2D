@@ -31,9 +31,9 @@ int main() {
         entityManager.destroyEntity(i);
     }
     // Remove some components.
-    for (int i = 0; i < 49000; ++i) {
-        physicsSystem.removeComponentByEntityID(i);
-    }
+    // for (int i = 0; i < 49000; ++i) {
+    //     physicsSystem.removeComponentByEntityID(i);
+    // }
     // for (int i = 49999; i >= 0; --i) {
     //     physicsSystem.removeComponentByEntityID(i);
     // }
