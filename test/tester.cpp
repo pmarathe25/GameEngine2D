@@ -27,9 +27,9 @@ int main() {
         * (float(rand()) / RAND_MAX - 0.5))));
     }
     // Remove some entities.
-    for (int i = 0; i < 49000; ++i) {
-        entityManager.destroyEntity(i);
-    }
+    // for (int i = 0; i < 49000; ++i) {
+    //     entityManager.destroyEntity(i);
+    // }
     // Remove some components.
     // for (int i = 0; i < 49000; ++i) {
     //     physicsSystem.removeComponentByEntityID(i);

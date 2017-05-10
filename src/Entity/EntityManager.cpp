@@ -33,14 +33,14 @@ void EntityManager::registerSystems(std::vector<SystemParent*> unregisteredSyste
     }
 }
 
-Entity& EntityManager::getEntity(int eID) {
-    return entities[eID];
+Entity* EntityManager::getEntity(int eID) {
+    return &entities[eID];
 }
 
-Entity& EntityManager::getEntity(const Component& component) {
-    return entities[component.getOwningEntityID()];
+Entity* EntityManager::getEntity(const Component& component) {
+    return getEntity(component.getOwningEntityID());
 }
 
-Entity& EntityManager::getEntity(const Component* component) {
-    return entities[component -> getOwningEntityID()];
+Entity* EntityManager::getEntity(const Component* component) {
+    return getEntity(component -> getOwningEntityID());
 }

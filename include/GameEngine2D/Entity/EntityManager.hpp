@@ -17,9 +17,9 @@ class EntityManager {
         int createEntity();
         void destroyEntity(int eID);
         void registerSystems(std::vector<SystemParent*> unregisteredSystems);
-        Entity& getEntity(int eID);
-        Entity& getEntity(const Component& component);
-        Entity& getEntity(const Component* component);
+        Entity* getEntity(int eID);
+        Entity* getEntity(const Component& component);
+        Entity* getEntity(const Component* component);
 
     private:
         std::vector<Entity> entities;

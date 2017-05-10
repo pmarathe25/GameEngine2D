@@ -22,7 +22,7 @@ class System : public SystemParent {
 
         // Add a component to the system if the entity does not have one from this system already.
         void addComponent(int eID, const ComponentType& newComponent) {
-            if (entityManager -> getEntity(eID).registerComponent(getSystemID(), components.size())) {
+            if (entityManager -> getEntity(eID) -> registerComponent(getSystemID(), components.size())) {
                 components.push_back(newComponent);
                 components.back().setOwningEntityID(eID);
             }
@@ -31,7 +31,7 @@ class System : public SystemParent {
         // Remove a component from the system and returns the eID of the owning entity of the other modified component.
         void removeComponentByEntityID(int eID) {
             // Return the index of the other entity that was modified.
-            Entity* entity = &(entityManager -> getEntity(eID));
+            Entity* entity = entityManager -> getEntity(eID);
             int componentIndex = entity -> getComponentIndexByID(getSystemID());
             if (componentIndex != -1) {
                 // First remove the component from the entity.
@@ -39,7 +39,7 @@ class System : public SystemParent {
                 if (componentIndex != size() - 1 && size() > 1) {
                     // Swap the component to remove with the last component and update the entity of the swapped component.
                     components[componentIndex] = components.back();
-                    entityManager -> getEntity(components[componentIndex]).updateCommponent(getSystemID(), componentIndex);
+                    entityManager -> getEntity(components[componentIndex]) -> updateCommponent(getSystemID(), componentIndex);
                 }
                 components.pop_back();
             }
@@ -50,12 +50,12 @@ class System : public SystemParent {
             if (componentIndex != -1) {
                 if (!entityDestroyed) {
                     // First remove the component from the entity if the entity is not being destroyed.
-                    entityManager -> getEntity(components[componentIndex]).deregisterComponent(getSystemID());
+                    entityManager -> getEntity(components[componentIndex]) -> deregisterComponent(getSystemID());
                 }
                 if (componentIndex != size() - 1 && size() > 1) {
                     // Swap the component to remove with the last component and update the entity of the swapped component.
                     components[componentIndex] = components.back();
-                    entityManager -> getEntity(components[componentIndex]).updateCommponent(getSystemID(), componentIndex);
+                    entityManager -> getEntity(components[componentIndex]) -> updateCommponent(getSystemID(), componentIndex);
                 }
                 components.pop_back();
             }
@@ -68,7 +68,7 @@ class System : public SystemParent {
 
         // Get a reference to a component by its owning entity id.
         ComponentType* getComponentByOwningEntityID(int eID) {
-            int index = entityManager -> getEntity(eID).getComponentIndexByID(getSystemID());
+            int index = entityManager -> getEntity(eID) -> getComponentIndexByID(getSystemID());
             if (index != -1) {
                 return &components[index];
             } else {
@@ -77,7 +77,7 @@ class System : public SystemParent {
         }
 
         ComponentType* getComponentByMatchingComponent(Component& component) {
-            int index = entityManager -> getEntity(component).getComponentIndexByID(getSystemID());
+            int index = entityManager -> getEntity(component) -> getComponentIndexByID(getSystemID());
             if (index != -1) {
                 return &components[index];
             } else {
