@@ -3,7 +3,6 @@
 #include "GameEngine2D/Component/Component.hpp"
 #include "GameEngine2D/Entity/EntityManager.hpp"
 #include <vector>
-#include <deque>
 
 class SystemParent {
     public:
@@ -22,11 +21,13 @@ class System : public SystemParent {
         }
 
         // Add a component to the system if the entity does not have one from this system already.
-        void addComponent(int eID, const ComponentType& newComponent) {
+        bool addComponent(int eID, const ComponentType& newComponent) {
             if (entityManager -> getEntity(eID) -> registerComponent(getSystemID(), components.size())) {
                 components.push_back(newComponent);
                 components.back().setOwningEntityID(eID);
+                return true;
             }
+            return false;
         }
 
         // Remove a component from the system and returns the eID of the owning entity of the other modified component.

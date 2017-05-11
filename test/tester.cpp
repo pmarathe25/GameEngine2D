@@ -15,8 +15,10 @@ int main() {
     // Create some systems.
     PhysicsSystem physicsSystem = PhysicsSystem(0, entityManager);
     RenderSystem renderSystem = RenderSystem(1, entityManager, &window, &physicsSystem);
+    std::cout << "Systems created." << std::endl;
     // Register systems with the EntityManager.
     entityManager.registerSystems({&physicsSystem, &renderSystem});
+    std::cout << "Systems registered." << std::endl;
     // Create some entities.
     for (int i = 0; i < 50000; ++i) {
         int temp = entityManager.createEntity();
@@ -25,6 +27,7 @@ int main() {
             * (float(rand()) / RAND_MAX - 0.5)), sf::Vector2f(1000 * (float(rand()) / RAND_MAX - 0.5), 1000
             * (float(rand()) / RAND_MAX - 0.5))));
     }
+    std::cout << "Components added." << std::endl;
     // Remove some entities.
     for (int i = 49000; i >= 0; --i) {
         entityManager.destroyEntity(i);
@@ -43,7 +46,7 @@ int main() {
           }
         }
         float frametime = clock.restart().asSeconds();
-        std::cout << (1 / frametime) << std::endl;
+        std::cout << "\rFrame rate: " << (1 / frametime) << "fps";
         window.clear(sf::Color::White);
         physicsSystem.update(frametime);
         renderSystem.update(frametime);

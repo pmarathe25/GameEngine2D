@@ -14,7 +14,7 @@ class SubscriberQueue {
         }
 
         // Clear the queue when all subscribers are done with it.
-        void clearQueue(int subscriberID) {
+        void clear(int subscriberID) {
             // If this subscriber has not told us before...
             if (!subscribers[subscriberID]) {
                 subscribers[subscriberID] = true;
@@ -30,6 +30,10 @@ class SubscriberQueue {
                 // Clear the queue.
                 queue.clear();
             }
+        }
+
+        void push_back(auto element) {
+            queue.push_back(element);
         }
     private:
         QueueType queue;
