@@ -3,35 +3,39 @@
 RenderSystem::RenderSystem(int systemID, EntityManager& entityManager, sf::RenderWindow* window, PhysicsSystem* physicsSystem) : System<RenderComponent>(entityManager, systemID) {
     this -> window = window;
     this -> physicsSystem = physicsSystem;
-    physicsSystem -> getComponentQueue().registerSubscriber(getSystemID());
+    if (physicsSystem != NULL) {
+        physicsSystem -> getComponentQueue().registerSubscriber(getSystemID());
+    }
 }
 
 bool RenderSystem::addComponent(int eID, const RenderComponent& newComponent) {
     System<RenderComponent>::addComponent(eID, newComponent);
-    PhysicsComponent* temp = physicsSystem -> getComponentByEntityID(eID);
-    if (temp != NULL) {
-        components.back().bHasPhysics = true;
+    if (physicsSystem != NULL) {
+        PhysicsComponent* temp = physicsSystem -> getComponentByEntityID(eID);
+        if (temp != NULL) {
+            components.back().bHasPhysics = true;
+        }
     }
 }
 
 void RenderSystem::update(float frametime) {
     // Check the physics queue
-    if (physicsSystem -> getComponentQueue().size() != 0) {
+    if (physicsSystem != NULL) {
         int queueSize =  physicsSystem -> getComponentQueue().size();
-        for (int i = 0; i < queueSize; ++i) {
-            RenderComponent* temp = getComponentByEntityID(physicsSystem -> getComponentQueue()[i]);
-            if (temp != NULL) {
-                temp -> bHasPhysics = physicsSystem -> getComponentByEntityID(physicsSystem -> getComponentQueue()[i]) != NULL;
+        if (queueSize != 0) {
+            for (int i = 0; i < queueSize; ++i) {
+                RenderComponent* temp = getComponentByEntityID(physicsSystem -> getComponentQueue()[i]);
+                if (temp != NULL) {
+                    temp -> bHasPhysics = physicsSystem -> getComponentByEntityID(physicsSystem -> getComponentQueue()[i]) != NULL;
+                }
             }
+            physicsSystem -> getComponentQueue().done(getSystemID());
         }
-        physicsSystem -> getComponentQueue().clear(getSystemID());
     }
-    // Now update the components.
+    // Then update and draw the components.
     for (std::vector<RenderComponent>::iterator renderComponent = components.begin(); renderComponent != components.end(); ++renderComponent) {
-        if (physicsSystem != 0) {
-            if (renderComponent -> bHasPhysics) {
-                renderComponent -> sprite.setPosition(physicsSystem -> getComponentByMatchingComponent(*renderComponent) -> position);
-            }
+        if (physicsSystem != NULL && renderComponent -> bHasPhysics) {
+            renderComponent -> sprite.setPosition(physicsSystem -> getComponentByMatchingComponent(*renderComponent) -> position);
         }
         if (!isOffScreen(renderComponent -> sprite.getPosition(), renderComponent -> sprite.getTexture() -> getSize())) {
             window -> draw(renderComponent -> sprite);
