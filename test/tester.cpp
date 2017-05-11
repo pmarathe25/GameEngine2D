@@ -46,7 +46,7 @@ int main() {
           }
         }
         float frametime = clock.restart().asSeconds();
-        std::cout << "\rFrame rate: " << (1 / frametime) << "fps";
+        std::cout << "\rFrame rate: " << (1 / frametime) << "fps" << std::flush;
         window.clear(sf::Color::White);
         physicsSystem.update(frametime);
         renderSystem.update(frametime);
