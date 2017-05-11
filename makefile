@@ -5,7 +5,7 @@ TESTDIR = test/
 LIBDIR = lib/
 LIBS =
 OBJS = $(BUILDDIR)/Component.o $(BUILDDIR)/EntityManager.o $(BUILDDIR)/Entity.o $(BUILDDIR)/ResourceManager.o \
- 	$(BUILDDIR)/RenderComponent.o $(BUILDDIR)/RenderSystem.o $(BUILDDIR)/PhysicsComponent.o $(BUILDDIR)/PhysicsSystem.o
+ 	$(BUILDDIR)/RenderComponent.o $(BUILDDIR)/RenderSystem.o $(BUILDDIR)/PhysicsComponent.o $(BUILDDIR)/PhysicsSystem.o \
 TESTOBJS =  $(BUILDDIR)/tester.o
 CXX = g++
 CFLAGS = -fPIC -c -I$(INCLUDEDIR) -std=c++11
