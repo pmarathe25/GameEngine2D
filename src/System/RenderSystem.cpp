@@ -14,6 +14,7 @@ bool RenderSystem::addComponent(int eID, const RenderComponent& newComponent) {
         PhysicsComponent* temp = physicsSystem -> getComponentByEntityID(eID);
         if (temp != NULL) {
             components.back().bHasPhysics = true;
+            components.back().physicsComponentIndex = entityManager -> getEntity(eID) -> getComponentIndexByID(physicsSystem -> getSystemID());
         }
     }
 }
@@ -27,6 +28,9 @@ void RenderSystem::update(float frametime) {
                 RenderComponent* temp = getComponentByEntityID(physicsSystem -> getComponentQueue()[i]);
                 if (temp != NULL) {
                     temp -> bHasPhysics = physicsSystem -> getComponentByEntityID(physicsSystem -> getComponentQueue()[i]) != NULL;
+                    // Cache the corresponding physics component index.
+                    temp -> physicsComponentIndex = temp -> bHasPhysics ? entityManager -> getEntity(physicsSystem -> getComponentQueue()[i])
+                        -> getComponentIndexByID(physicsSystem -> getSystemID()) : -1;
                 }
             }
             physicsSystem -> getComponentQueue().done(getSystemID());
@@ -35,7 +39,7 @@ void RenderSystem::update(float frametime) {
     // Then update and draw the components.
     for (std::vector<RenderComponent>::iterator renderComponent = components.begin(); renderComponent != components.end(); ++renderComponent) {
         if (physicsSystem != NULL && renderComponent -> bHasPhysics) {
-            renderComponent -> sprite.setPosition(physicsSystem -> getComponentByMatchingComponent(*renderComponent) -> position);
+            renderComponent -> sprite.setPosition(physicsSystem -> getComponentByIndex(renderComponent -> physicsComponentIndex) -> position);
         }
         if (!isOffScreen(renderComponent -> sprite.getPosition(), renderComponent -> sprite.getTexture() -> getSize())) {
             window -> draw(renderComponent -> sprite);

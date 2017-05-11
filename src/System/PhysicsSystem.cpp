@@ -11,20 +11,23 @@ bool PhysicsSystem::addComponent(int eID, const PhysicsComponent& newComponent) 
     return temp;
 }
 
-bool PhysicsSystem::removeComponentByEntityID(int eID) {
-    bool temp = System<PhysicsComponent>::removeComponentByEntityID(eID);
-    if (temp) {
+int PhysicsSystem::removeComponentByEntityID(int eID) {
+    int temp = System<PhysicsComponent>::removeComponentByEntityID(eID);
+    if (temp != -1) {
         componentQueue.push_back(eID);
+        componentQueue.push_back(temp);
     }
     return temp;
 }
 
 int PhysicsSystem::removeComponentByIndex(int componentIndex, bool entityDestroyed) {
-    int eID = System<PhysicsComponent>::removeComponentByIndex(componentIndex, entityDestroyed);
-    if (eID != -1) {
+    int eID = components[componentIndex].getOwningEntityID();
+    int temp = System<PhysicsComponent>::removeComponentByIndex(componentIndex, entityDestroyed);
+    if (temp != -1) {
         componentQueue.push_back(eID);
+        componentQueue.push_back(temp);
     }
-    return eID;
+    return temp;
 }
 
 SubscriberQueue<std::deque<int> >& PhysicsSystem::getComponentQueue() {

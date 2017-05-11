@@ -54,9 +54,9 @@ int main() {
     //     entityManager.destroyEntity(i);
     // }
     // Remove some components.
-    for (int i = 0; i < 49000; ++i) {
-        physicsSystem.removeComponentByEntityID(i);
-    }
+    // for (int i = 0; i < 50000; ++i) {
+    //     physicsSystem.removeComponentByEntityID(i);
+    // }
     // Create benchmark
     Benchmark benchmark = Benchmark();
     // Create clock for measuring frametimes.

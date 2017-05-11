@@ -8,7 +8,7 @@ class SystemParent {
     public:
         virtual int getSystemID() = 0;
         virtual void update(float frametime) = 0;
-        virtual bool removeComponentByEntityID(int eID) = 0;
+        virtual int removeComponentByEntityID(int eID) = 0;
         virtual int removeComponentByIndex(int componentIndex, bool entityDestroyed) = 0;
 };
 
@@ -31,7 +31,7 @@ class System : public SystemParent {
         }
 
         // Remove a component from the system and returns the eID of the owning entity of the other modified component.
-        bool removeComponentByEntityID(int eID) {
+        int removeComponentByEntityID(int eID) {
             // Return the index of the other entity that was modified.
             Entity* entity = entityManager -> getEntity(eID);
             int componentIndex = entity -> getComponentIndexByID(getSystemID());
@@ -42,11 +42,15 @@ class System : public SystemParent {
                     // Swap the component to remove with the last component and update the entity of the swapped component.
                     components[componentIndex] = components.back();
                     entityManager -> getEntity(components[componentIndex]) -> updateCommponent(getSystemID(), componentIndex);
+                    components.pop_back();
+                    return components[componentIndex].getOwningEntityID();
+                } else {
+                    components.pop_back();
+                    return eID;
                 }
-                components.pop_back();
-                return true;
+            } else {
+                return -1;
             }
-            return false;
         }
 
         int removeComponentByIndex(int componentIndex, bool entityDestroyed = false) {
@@ -63,14 +67,17 @@ class System : public SystemParent {
                     // Swap the component to remove with the last component and update the entity of the swapped component.
                     components[componentIndex] = components.back();
                     entityManager -> getEntity(components[componentIndex]) -> updateCommponent(getSystemID(), componentIndex);
+                    components.pop_back();
+                    return components[componentIndex].getOwningEntityID();
+                } else {
+                    components.pop_back();
+                    return eID;
                 }
-                components.pop_back();
-                return eID;
             }
         }
 
         // Get a reference to a component.
-        ComponentType* getComponent(int index) {
+        ComponentType* getComponentByIndex(int index) {
             return &components[index];
         }
 
@@ -78,7 +85,7 @@ class System : public SystemParent {
         ComponentType* getComponentByEntityID(int eID) {
             int index = entityManager -> getEntity(eID) -> getComponentIndexByID(getSystemID());
             if (index != -1) {
-                return &components[index];
+                return getComponentByIndex(index);
             } else {
                 return NULL;
             }
@@ -87,7 +94,16 @@ class System : public SystemParent {
         ComponentType* getComponentByMatchingComponent(Component& component) {
             int index = entityManager -> getEntity(component) -> getComponentIndexByID(getSystemID());
             if (index != -1) {
-                return &components[index];
+                return getComponentByIndex(index);
+            } else {
+                return NULL;
+            }
+        }
+
+        ComponentType* getComponentByMatchingComponent(Component* component) {
+            int index = entityManager -> getEntity(component) -> getComponentIndexByID(getSystemID());
+            if (index != -1) {
+                return getComponentByIndex(index);
             } else {
                 return NULL;
             }

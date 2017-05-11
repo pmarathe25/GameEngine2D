@@ -11,7 +11,7 @@ class PhysicsSystem : public System<PhysicsComponent> {
     public:
         PhysicsSystem(int systemID, EntityManager& entityManager);
         bool addComponent(int eID, const PhysicsComponent& newComponent);
-        bool removeComponentByEntityID(int eID);
+        int removeComponentByEntityID(int eID);
         int removeComponentByIndex(int componentIndex, bool entityDestroyed = false);
         SubscriberQueue<std::deque<int> >& getComponentQueue();
         void update(float frametime);
