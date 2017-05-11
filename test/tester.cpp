@@ -8,6 +8,26 @@
 const int WINDOW_X = 1280;
 const int WINDOW_Y = 720;
 
+class Benchmark {
+    public:
+        Benchmark() {};
+        void displayRealtimePerformanceInformation() {
+            std::cout << "\rCurrent Frame rate: " << std::setw(6) << framerate << " fps\tTime elapsed: " << totalFrameTime << " seconds\tNumber of Frames: " << numFrames << std::flush;
+        }
+        void displayAverageFramerate() {
+            std::cout << "Average frame rate = " << (numFrames / totalFrameTime) << " fps" << std::endl;
+        }
+        void update(float frametime) {
+            ++numFrames;
+            totalFrameTime += frametime;
+            framerate = 1 / frametime;
+        }
+    private:
+        unsigned long long numFrames = 0;
+        float totalFrameTime = 0.0;
+        int framerate = 0;
+};
+
 int main() {
     ResourceManager resourceManager = ResourceManager();
     resourceManager.addResourceDirectory("test/res/");
@@ -37,6 +57,9 @@ int main() {
     for (int i = 0; i < 49000; ++i) {
         physicsSystem.removeComponentByEntityID(i);
     }
+    // Create benchmark
+    Benchmark benchmark = Benchmark();
+    // Create clock for measuring frametimes.
     sf::Clock clock;
     while (window.isOpen()) {
         // Handle events.
@@ -47,11 +70,15 @@ int main() {
           }
         }
         float frametime = clock.restart().asSeconds();
-        std::cout << "\rFrame rate: " << (1 / frametime) << "fps" << std::flush;
         window.clear(sf::Color::White);
+        // Benchmark.
+        benchmark.update(frametime);
+        benchmark.displayRealtimePerformanceInformation();
+        // Systems.
         physicsSystem.update(frametime);
         renderSystem.update(frametime);
         window.display();
     }
     std::cout << std::endl;
+    benchmark.displayAverageFramerate();
 }

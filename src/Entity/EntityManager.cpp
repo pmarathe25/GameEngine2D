@@ -44,3 +44,7 @@ Entity* EntityManager::getEntity(const Component& component) {
 Entity* EntityManager::getEntity(const Component* component) {
     return getEntity(component -> getOwningEntityID());
 }
+
+int EntityManager::size() {
+    return entities.size();
+}
