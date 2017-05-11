@@ -57,7 +57,6 @@ class System : public SystemParent {
             if (componentIndex < 0 || componentIndex >= size()) {
                 return -1;
             } else {
-                int eID = components[componentIndex].getOwningEntityID();
                 // Return the index of the other entity that was modified.
                 if (!entityDestroyed) {
                     // First remove the component from the entity if the entity is not being destroyed.
@@ -70,6 +69,7 @@ class System : public SystemParent {
                     components.pop_back();
                     return components[componentIndex].getOwningEntityID();
                 } else {
+                    int eID = components[componentIndex].getOwningEntityID();
                     components.pop_back();
                     return eID;
                 }
