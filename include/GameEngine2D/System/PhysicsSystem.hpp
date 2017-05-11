@@ -11,10 +11,12 @@ class PhysicsSystem : public System<PhysicsComponent> {
     public:
         PhysicsSystem(int systemID, EntityManager& entityManager);
         bool addComponent(int eID, const PhysicsComponent& newComponent);
-        SubscriberQueue<std::deque<int> >& getComponentAddedQueue();
+        bool removeComponentByEntityID(int eID);
+        int removeComponentByIndex(int componentIndex, bool entityDestroyed = false);
+        SubscriberQueue<std::deque<int> >& getComponentQueue();
         void update(float frametime);
     private:
-        SubscriberQueue<std::deque<int> > componentAddedQueue;
+        SubscriberQueue<std::deque<int> > componentQueue;
 };
 
 #endif

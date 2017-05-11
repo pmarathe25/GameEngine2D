@@ -44,7 +44,7 @@ $(BUILDDIR)/PhysicsComponent.o: $(SRCDIR)/Component/PhysicsComponent.cpp $(INCLU
 	$(CXX) $(CFLAGS) $(SRCDIR)/Component/PhysicsComponent.cpp -o $(BUILDDIR)/PhysicsComponent.o
 
 $(BUILDDIR)/PhysicsSystem.o: $(SRCDIR)/System/PhysicsSystem.cpp $(INCLUDEDIR)/GameEngine2D/System/PhysicsSystem.hpp \
-	$(INCLUDEDIR)/GameEngine2D/Component/PhysicsComponent.hpp $(INCLUDEDIR)/GameEngine2D/System/System.hpp
+	$(INCLUDEDIR)/GameEngine2D/Component/PhysicsComponent.hpp $(INCLUDEDIR)/GameEngine2D/System/System.hpp $(INCLUDEDIR)/GameEngine2D/SubscriberQueue.hpp
 	$(CXX) $(CFLAGS) $(SRCDIR)/System/PhysicsSystem.cpp -o $(BUILDDIR)/PhysicsSystem.o
 
 clean:

@@ -1,5 +1,6 @@
 #ifndef SUBSCRIBER_QUEUE
 #define SUBSCRIBER_QUEUE
+#include <iostream>
 
 template <class QueueType>
 class SubscriberQueue {
@@ -35,10 +36,18 @@ class SubscriberQueue {
         void push_back(auto element) {
             queue.push_back(element);
         }
+
+        auto& operator[](int index) {
+            return queue[index];
+        }
+
+        int size() {
+            return queue.size();
+        }
     private:
         QueueType queue;
         std::map<int, bool> subscribers;
-        int numSubscribersDone;
+        int numSubscribersDone = 0;
 };
 
 #endif

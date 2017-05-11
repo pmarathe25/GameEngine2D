@@ -8,8 +8,8 @@ class SystemParent {
     public:
         virtual int getSystemID() = 0;
         virtual void update(float frametime) = 0;
-        virtual void removeComponentByEntityID(int eID) = 0;
-        virtual void removeComponentByIndex(int componentIndex, bool entityDestroyed) = 0;
+        virtual bool removeComponentByEntityID(int eID) = 0;
+        virtual int removeComponentByIndex(int componentIndex, bool entityDestroyed) = 0;
 };
 
 template <class ComponentType>
@@ -31,7 +31,7 @@ class System : public SystemParent {
         }
 
         // Remove a component from the system and returns the eID of the owning entity of the other modified component.
-        void removeComponentByEntityID(int eID) {
+        bool removeComponentByEntityID(int eID) {
             // Return the index of the other entity that was modified.
             Entity* entity = entityManager -> getEntity(eID);
             int componentIndex = entity -> getComponentIndexByID(getSystemID());
@@ -44,12 +44,17 @@ class System : public SystemParent {
                     entityManager -> getEntity(components[componentIndex]) -> updateCommponent(getSystemID(), componentIndex);
                 }
                 components.pop_back();
+                return true;
             }
+            return false;
         }
 
-        void removeComponentByIndex(int componentIndex, bool entityDestroyed = false) {
-            // Return the index of the other entity that was modified.
-            if (componentIndex != -1) {
+        int removeComponentByIndex(int componentIndex, bool entityDestroyed = false) {
+            if (componentIndex < 0 || componentIndex >= size()) {
+                return -1;
+            } else {
+                int eID = components[componentIndex].getOwningEntityID();
+                // Return the index of the other entity that was modified.
                 if (!entityDestroyed) {
                     // First remove the component from the entity if the entity is not being destroyed.
                     entityManager -> getEntity(components[componentIndex]) -> deregisterComponent(getSystemID());
@@ -60,6 +65,7 @@ class System : public SystemParent {
                     entityManager -> getEntity(components[componentIndex]) -> updateCommponent(getSystemID(), componentIndex);
                 }
                 components.pop_back();
+                return eID;
             }
         }
 
@@ -69,7 +75,7 @@ class System : public SystemParent {
         }
 
         // Get a reference to a component by its owning entity id.
-        ComponentType* getComponentByOwningEntityID(int eID) {
+        ComponentType* getComponentByEntityID(int eID) {
             int index = entityManager -> getEntity(eID) -> getComponentIndexByID(getSystemID());
             if (index != -1) {
                 return &components[index];

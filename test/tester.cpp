@@ -3,6 +3,7 @@
 #include "GameEngine2D/System/RenderSystem.hpp"
 #include "GameEngine2D/System/PhysicsSystem.hpp"
 #include <iostream>
+#include <iomanip>
 
 const int WINDOW_X = 1280;
 const int WINDOW_Y = 720;
@@ -29,13 +30,13 @@ int main() {
     }
     std::cout << "Components added." << std::endl;
     // Remove some entities.
-    for (int i = 49000; i >= 0; --i) {
-        entityManager.destroyEntity(i);
-    }
-    // Remove some components.
-    // for (int i = 0; i < 49000; ++i) {
-    //     physicsSystem.removeComponentByEntityID(i);
+    // for (int i = 49000; i >= 0; --i) {
+    //     entityManager.destroyEntity(i);
     // }
+    // Remove some components.
+    for (int i = 0; i < 49000; ++i) {
+        physicsSystem.removeComponentByEntityID(i);
+    }
     sf::Clock clock;
     while (window.isOpen()) {
         // Handle events.
@@ -52,4 +53,5 @@ int main() {
         renderSystem.update(frametime);
         window.display();
     }
+    std::cout << std::endl;
 }

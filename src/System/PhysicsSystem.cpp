@@ -4,13 +4,31 @@ PhysicsSystem::PhysicsSystem(int systemID, EntityManager& entityManager) : Syste
 }
 
 bool PhysicsSystem::addComponent(int eID, const PhysicsComponent& newComponent) {
-    if (System<PhysicsComponent>::addComponent(eID, newComponent)) {
-        componentAddedQueue.push_back(eID);
+    bool temp = System<PhysicsComponent>::addComponent(eID, newComponent);
+    if (temp) {
+        componentQueue.push_back(eID);
     }
+    return temp;
 }
 
-SubscriberQueue<std::deque<int> >& PhysicsSystem::getComponentAddedQueue() {
-    return componentAddedQueue;
+bool PhysicsSystem::removeComponentByEntityID(int eID) {
+    bool temp = System<PhysicsComponent>::removeComponentByEntityID(eID);
+    if (temp) {
+        componentQueue.push_back(eID);
+    }
+    return temp;
+}
+
+int PhysicsSystem::removeComponentByIndex(int componentIndex, bool entityDestroyed) {
+    int eID = System<PhysicsComponent>::removeComponentByIndex(componentIndex, entityDestroyed);
+    if (eID != -1) {
+        componentQueue.push_back(eID);
+    }
+    return eID;
+}
+
+SubscriberQueue<std::deque<int> >& PhysicsSystem::getComponentQueue() {
+    return componentQueue;
 }
 
 void PhysicsSystem::update(float frametime) {
