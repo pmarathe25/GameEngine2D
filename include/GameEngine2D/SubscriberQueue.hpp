@@ -17,7 +17,7 @@ class SubscriberQueue {
         // Clear the queue when all subscribers are done with it.
         void done(int subscriberID) {
             // If this subscriber has not told us before...
-            if (!subscribers[subscriberID]) {
+            if (subscribers.count(subscriberID) > 0 && !subscribers[subscriberID]) {
                 subscribers[subscriberID] = true;
                 ++numSubscribersDone;
             }

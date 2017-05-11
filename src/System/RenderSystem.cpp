@@ -9,14 +9,11 @@ RenderSystem::RenderSystem(int systemID, EntityManager& entityManager, sf::Rende
 }
 
 bool RenderSystem::addComponent(int eID, const RenderComponent& newComponent) {
-    System<RenderComponent>::addComponent(eID, newComponent);
-    if (physicsSystem != NULL) {
-        PhysicsComponent* temp = physicsSystem -> getComponentByEntityID(eID);
-        if (temp != NULL) {
-            components.back().bHasPhysics = true;
-            components.back().physicsComponentIndex = entityManager -> getEntity(eID) -> getComponentIndexByID(physicsSystem -> getSystemID());
-        }
+    bool added = System<RenderComponent>::addComponent(eID, newComponent);
+    if (added) {
+        components.back().bOffScreen = isOffScreen(components.back().sprite.getPosition(), components.back().sprite.getTexture() -> getSize());
     }
+    return added;
 }
 
 void RenderSystem::update(float frametime) {
@@ -27,10 +24,8 @@ void RenderSystem::update(float frametime) {
             for (int i = 0; i < queueSize; ++i) {
                 RenderComponent* temp = getComponentByEntityID(physicsSystem -> getComponentQueue()[i]);
                 if (temp != NULL) {
-                    temp -> bHasPhysics = physicsSystem -> getComponentByEntityID(physicsSystem -> getComponentQueue()[i]) != NULL;
                     // Cache the corresponding physics component index.
-                    temp -> physicsComponentIndex = temp -> bHasPhysics ? entityManager -> getEntity(physicsSystem -> getComponentQueue()[i])
-                        -> getComponentIndexByID(physicsSystem -> getSystemID()) : -1;
+                    temp -> physicsComponentIndex = entityManager -> getEntity(physicsSystem -> getComponentQueue()[i]) -> getComponentIndexByID(physicsSystem -> getSystemID());
                 }
             }
             physicsSystem -> getComponentQueue().done(getSystemID());
@@ -38,10 +33,11 @@ void RenderSystem::update(float frametime) {
     }
     // Then update and draw the components.
     for (std::vector<RenderComponent>::iterator renderComponent = components.begin(); renderComponent != components.end(); ++renderComponent) {
-        if (physicsSystem != NULL && renderComponent -> bHasPhysics) {
+        if (physicsSystem != NULL && renderComponent -> physicsComponentIndex != -1) {
             renderComponent -> sprite.setPosition(physicsSystem -> getComponentByIndex(renderComponent -> physicsComponentIndex) -> position);
+            renderComponent -> bOffScreen = isOffScreen(renderComponent -> sprite.getPosition(), renderComponent -> sprite.getTexture() -> getSize());
         }
-        if (!isOffScreen(renderComponent -> sprite.getPosition(), renderComponent -> sprite.getTexture() -> getSize())) {
+        if (!renderComponent -> bOffScreen) {
             window -> draw(renderComponent -> sprite);
         }
     }
