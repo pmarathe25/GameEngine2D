@@ -59,7 +59,7 @@ int main() {
     std::cout << "Entities destroyed. Time required: " << clock.getElapsedTime().asMilliseconds() << " milliseconds." << std::endl;
     // Remove some components.
     clock.restart();
-    for (int i = 49000; i >= 0; --i) {
+    for (int i = 50000; i >= 0; --i) {
         physicsSystem.removeComponentByEntityID(i);
     }
     std::cout << "Components removed. Time required: " << clock.getElapsedTime().asMilliseconds() << " milliseconds." << std::endl;
