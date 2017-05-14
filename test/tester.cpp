@@ -15,7 +15,7 @@ class Benchmark {
         void displayRealtimePerformanceInformation() {
             std::cout << "\rCurrent Framerate: " << std::setw(6) << framerate << " fps\tTime elapsed: " << std::setw(8) << totalFrameTime << " seconds\tNumber of Frames: " << numFrames << std::flush;
         }
-        void displayAverageFramerate() {
+        void displayFramerateInformation() {
             std::cout << "Minimum Framerate: " << minFramerate << " fps\tAverage Framerate: " << (numFrames / totalFrameTime) << " fps\tMaximium Framerate: " << maxFramerate << " fps" << std::endl;
         }
         void update(float frametime) {
@@ -34,7 +34,6 @@ class Benchmark {
         unsigned long long numFrames = 0;
         float totalFrameTime = 0.0;
         int framerate = 0, minFramerate = std::numeric_limits<int>::max(), maxFramerate = -1;
-
 };
 
 int main() {
@@ -95,5 +94,5 @@ int main() {
         window.display();
     }
     std::cout << std::endl;
-    benchmark.displayAverageFramerate();
+    benchmark.displayFramerateInformation();
 }
