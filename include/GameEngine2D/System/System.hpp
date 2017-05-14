@@ -5,7 +5,7 @@
 #include <vector>
 
 class SystemParent {
-    public:        
+    public:
         int getSystemID() {
             return systemID;
         }
@@ -60,7 +60,7 @@ class System : public SystemParent {
 
         int removeComponentByIndex(int componentIndex, bool entityDestroyed = false) {
             if (componentIndex < 0 || componentIndex >= size()) {
-                return -1;
+                throw std::out_of_range("Component Index out of range");
             } else {
                 // Return the index of the other entity that was modified.
                 if (!entityDestroyed) {
