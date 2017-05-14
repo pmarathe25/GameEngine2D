@@ -40,6 +40,8 @@ int main() {
     // Register systems with the EntityManager.
     entityManager.registerSystems({&physicsSystem, &renderSystem});
     std::cout << "Systems registered." << std::endl;
+    // Create clock
+    sf::Clock clock;
     // Create some entities.
     for (int i = 0; i < 50000; ++i) {
         int temp = entityManager.createEntity();
@@ -48,19 +50,23 @@ int main() {
             * (float(rand()) / RAND_MAX - 0.5)), sf::Vector2f(1000 * (float(rand()) / RAND_MAX - 0.5), 1000
             * (float(rand()) / RAND_MAX - 0.5))));
     }
-    std::cout << "Components added." << std::endl;
+    std::cout << "Components added. Time required: " << clock.getElapsedTime().asMilliseconds() << " milliseconds." << std::endl;
     // Remove some entities.
-    // for (int i = 49000; i >= 0; --i) {
-    //     entityManager.destroyEntity(i);
-    // }
+    clock.restart();
+    for (int i = 49000; i >= 0; --i) {
+        entityManager.destroyEntity(i);
+    }
+    std::cout << "Entities destroyed. Time required: " << clock.getElapsedTime().asMilliseconds() << " milliseconds." << std::endl;
     // Remove some components.
-    // for (int i = 0; i < 50000; ++i) {
-    //     physicsSystem.removeComponentByEntityID(i);
-    // }
+    clock.restart();
+    for (int i = 49000; i >= 0; --i) {
+        physicsSystem.removeComponentByEntityID(i);
+    }
+    std::cout << "Components removed. Time required: " << clock.getElapsedTime().asMilliseconds() << " milliseconds." << std::endl;
     // Create benchmark
     Benchmark benchmark = Benchmark();
     // Create clock for measuring frametimes.
-    sf::Clock clock;
+    clock.restart();
     while (window.isOpen()) {
         // Handle events.
         sf::Event event;

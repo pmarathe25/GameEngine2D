@@ -34,7 +34,17 @@ class SubscriberQueue {
         }
 
         void push_back(auto element) {
-            queue.push_back(element);
+            if (subscribers.size() != 0) {
+                queue.push_back(element);
+            }
+        }
+
+        auto front() {
+            return queue.front();
+        }
+
+        auto back() {
+            return queue.back();
         }
 
         auto& operator[](int index) {

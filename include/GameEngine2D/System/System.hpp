@@ -39,23 +39,24 @@ class System : public SystemParent {
         int removeComponentByEntityID(int eID) {
             // Return the index of the other entity that was modified.
             Entity* entity = entityManager -> getEntity(eID);
-            int componentIndex = entity -> getComponentIndexByID(getSystemID());
-            if (componentIndex != -1) {
-                // First remove the component from the entity.
-                entity -> deregisterComponent(getSystemID());
-                if (componentIndex != size() - 1 && size() > 1) {
-                    // Swap the component to remove with the last component and update the entity of the swapped component.
-                    components[componentIndex] = components.back();
-                    entityManager -> getEntity(components[componentIndex]) -> updateCommponent(getSystemID(), componentIndex);
-                    components.pop_back();
-                    return components[componentIndex].getOwningEntityID();
-                } else {
-                    components.pop_back();
-                    return eID;
+            if (entity != NULL) {
+                int componentIndex = entity -> getComponentIndexByID(getSystemID());
+                if (componentIndex != -1) {
+                    // First remove the component from the entity.
+                    entity -> deregisterComponent(getSystemID());
+                    if (componentIndex != size() - 1 && size() > 1) {
+                        // Swap the component to remove with the last component and update the entity of the swapped component.
+                        components[componentIndex] = components.back();
+                        entityManager -> getEntity(components[componentIndex]) -> updateCommponent(getSystemID(), componentIndex);
+                        components.pop_back();
+                        return components[componentIndex].getOwningEntityID();
+                    } else {
+                        components.pop_back();
+                        return eID;
+                    }
                 }
-            } else {
-                return -1;
             }
+            return -1;
         }
 
         int removeComponentByIndex(int componentIndex, bool entityDestroyed = false) {

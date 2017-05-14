@@ -34,3 +34,16 @@ void Entity::updateCommponent(int systemID, int index) {
 std::map<int, int>& Entity::getComponentMap() {
     return components;
 }
+
+bool Entity::isActive() {
+    return bActive;
+}
+
+void Entity::activate() {
+    bActive = true;
+}
+
+void Entity::deactivate() {
+    bActive = false;
+    components.clear();
+}

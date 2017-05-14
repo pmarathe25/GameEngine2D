@@ -18,9 +18,14 @@ class Entity {
         void updateCommponent(int systemID, int index);
         // Get the component map.
         std::map<int, int>& getComponentMap();
+        // Activate or deactivate the entity.
+        bool isActive();
+        void activate();
+        void deactivate();
     private:
         // Data members.
         std::map<int, int> components;
+        bool bActive = true;
 };
 
 #endif

@@ -23,10 +23,12 @@ void RenderSystem::update(float frametime) {
         if (queueSize != 0) {
             for (int i = 0; i < queueSize; ++i) {
                 Entity* entity = entityManager -> getEntity(physicsSystem -> getComponentQueue()[i]);
-                int tempIndex = entity -> getComponentIndexByID(getSystemID());
-                if (tempIndex != -1) {
-                    // Cache the corresponding physics component index.
-                    getComponentByIndex(tempIndex) -> physicsComponentIndex = entity -> getComponentIndexByID(physicsSystem -> getSystemID());
+                if (entity != NULL) {
+                    int tempIndex = entity -> getComponentIndexByID(getSystemID());
+                    if (tempIndex != -1) {
+                        // Cache the corresponding physics component index.
+                        getComponentByIndex(tempIndex) -> physicsComponentIndex = entity -> getComponentIndexByID(physicsSystem -> getSystemID());
+                    }
                 }
             }
             physicsSystem -> getComponentQueue().done(getSystemID());

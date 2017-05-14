@@ -4,30 +4,30 @@ PhysicsSystem::PhysicsSystem(int systemID, EntityManager& entityManager) : Syste
 }
 
 bool PhysicsSystem::addComponent(int eID, const PhysicsComponent& newComponent) {
-    bool temp = System<PhysicsComponent>::addComponent(eID, newComponent);
-    if (temp) {
+    bool otherEID = System<PhysicsComponent>::addComponent(eID, newComponent);
+    if (otherEID) {
         componentQueue.push_back(eID);
     }
-    return temp;
+    return otherEID;
 }
 
 int PhysicsSystem::removeComponentByEntityID(int eID) {
-    int temp = System<PhysicsComponent>::removeComponentByEntityID(eID);
-    if (temp != -1) {
+    int otherEID = System<PhysicsComponent>::removeComponentByEntityID(eID);
+    if (otherEID != -1) {
         componentQueue.push_back(eID);
-        componentQueue.push_back(temp);
+        componentQueue.push_back(otherEID);
     }
-    return temp;
+    return otherEID;
 }
 
 int PhysicsSystem::removeComponentByIndex(int componentIndex, bool entityDestroyed) {
     int eID = components[componentIndex].getOwningEntityID();
-    int temp = System<PhysicsComponent>::removeComponentByIndex(componentIndex, entityDestroyed);
-    if (temp != -1) {
+    int otherEID = System<PhysicsComponent>::removeComponentByIndex(componentIndex, entityDestroyed);
+    if (otherEID != -1) {
         componentQueue.push_back(eID);
-        componentQueue.push_back(temp);
+        componentQueue.push_back(otherEID);
     }
-    return temp;
+    return otherEID;
 }
 
 SubscriberQueue<std::deque<int> >& PhysicsSystem::getComponentQueue() {

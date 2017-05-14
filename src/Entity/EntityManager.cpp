@@ -10,7 +10,7 @@ int EntityManager::createEntity() {
     if (!freeIDs.empty()) {
         newID = freeIDs.back();
         freeIDs.pop_back();
-        entities[newID] = Entity();
+        entities[newID].activate();
     } else {
         newID = entities.size();
         entities.push_back(Entity());
@@ -25,6 +25,7 @@ void EntityManager::destroyEntity(int eID) {
     }
     // Push it to the free IDs deque.
     freeIDs.push_back(eID);
+    entities[eID].deactivate();
 }
 
 void EntityManager::registerSystems(std::vector<SystemParent*> unregisteredSystems) {
@@ -34,7 +35,8 @@ void EntityManager::registerSystems(std::vector<SystemParent*> unregisteredSyste
 }
 
 Entity* EntityManager::getEntity(int eID) {
-    return &entities[eID];
+    Entity* entity = &entities[eID];
+    return (entity -> isActive()) ? entity : NULL;
 }
 
 Entity* EntityManager::getEntity(const Component& component) {
