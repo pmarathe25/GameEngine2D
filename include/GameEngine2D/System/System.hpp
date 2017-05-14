@@ -5,11 +5,16 @@
 #include <vector>
 
 class SystemParent {
-    public:
-        virtual int getSystemID() = 0;
+    public:        
+        int getSystemID() {
+            return systemID;
+        }
+
         virtual void update(float frametime) = 0;
         virtual int removeComponentByEntityID(int eID) = 0;
         virtual int removeComponentByIndex(int componentIndex, bool entityDestroyed) = 0;
+    protected:
+        int systemID;
 };
 
 template <class ComponentType>
@@ -113,15 +118,10 @@ class System : public SystemParent {
             return components.size();
         }
 
-        int getSystemID() {
-            return systemID;
-        };
-
         virtual void update(float frametime) = 0;
     protected:
         std::vector<ComponentType> components;
         EntityManager* entityManager;
-        int systemID;
 };
 
 #endif
