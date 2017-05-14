@@ -35,8 +35,12 @@ void EntityManager::registerSystems(std::vector<SystemParent*> unregisteredSyste
 }
 
 Entity* EntityManager::getEntity(int eID) {
-    Entity* entity = &entities[eID];
-    return (entity -> isActive()) ? entity : NULL;
+    if (eID < 0 || eID >= entities.size()) {
+        return NULL;
+    } else {
+        Entity* entity = &entities[eID];
+        return (entity -> isActive()) ? entity : NULL;
+    }
 }
 
 Entity* EntityManager::getEntity(const Component& component) {

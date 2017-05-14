@@ -4,6 +4,7 @@
 #include "GameEngine2D/System/PhysicsSystem.hpp"
 #include <iostream>
 #include <iomanip>
+#include <limits>
 
 const int WINDOW_X = 1280;
 const int WINDOW_Y = 720;
@@ -12,20 +13,28 @@ class Benchmark {
     public:
         Benchmark() {};
         void displayRealtimePerformanceInformation() {
-            std::cout << "\rCurrent Frame rate: " << std::setw(6) << framerate << " fps\tTime elapsed: " << totalFrameTime << " seconds\tNumber of Frames: " << numFrames << std::flush;
+            std::cout << "\rCurrent Framerate: " << std::setw(6) << framerate << " fps\tTime elapsed: " << std::setw(8) << totalFrameTime << " seconds\tNumber of Frames: " << numFrames << std::flush;
         }
         void displayAverageFramerate() {
-            std::cout << "Average frame rate = " << (numFrames / totalFrameTime) << " fps" << std::endl;
+            std::cout << "Minimum Framerate: " << minFramerate << " fps\tAverage Framerate: " << (numFrames / totalFrameTime) << " fps\tMaximium Framerate: " << maxFramerate << " fps" << std::endl;
         }
         void update(float frametime) {
             ++numFrames;
             totalFrameTime += frametime;
-            framerate = 1 / frametime;
+            if (frametime != 0) {
+                framerate = 1 / frametime;
+                if  (framerate < minFramerate) {
+                    minFramerate = framerate;
+                } else if (framerate > maxFramerate) {
+                    maxFramerate = framerate;
+                }
+            }
         }
     private:
         unsigned long long numFrames = 0;
         float totalFrameTime = 0.0;
-        int framerate = 0;
+        int framerate = 0, minFramerate = std::numeric_limits<int>::max(), maxFramerate = -1;
+
 };
 
 int main() {
@@ -52,22 +61,23 @@ int main() {
     }
     std::cout << "Components added. Time required: " << clock.getElapsedTime().asMilliseconds() << " milliseconds." << std::endl;
     // Remove some entities.
-    clock.restart();
-    for (int i = 49000; i >= 0; --i) {
-        entityManager.destroyEntity(i);
-    }
-    std::cout << "Entities destroyed. Time required: " << clock.getElapsedTime().asMilliseconds() << " milliseconds." << std::endl;
+    // clock.restart();
+    // for (int i = 49000; i >= 0; --i) {
+    //     entityManager.destroyEntity(i);
+    // }
+    // std::cout << "Entities destroyed. Time required: " << clock.getElapsedTime().asMilliseconds() << " milliseconds." << std::endl;
     // Remove some components.
-    clock.restart();
-    for (int i = 50000; i >= 0; --i) {
-        physicsSystem.removeComponentByEntityID(i);
-    }
-    std::cout << "Components removed. Time required: " << clock.getElapsedTime().asMilliseconds() << " milliseconds." << std::endl;
+    // clock.restart();
+    // for (int i = 49000; i >= 0; --i) {
+    //     physicsSystem.removeComponentByEntityID(i);
+    // }
+    // std::cout << "Components removed. Time required: " << clock.getElapsedTime().asMilliseconds() << " milliseconds." << std::endl;
     // Create benchmark
     Benchmark benchmark = Benchmark();
     // Create clock for measuring frametimes.
     clock.restart();
     while (window.isOpen()) {
+        float frametime = clock.restart().asSeconds();
         // Handle events.
         sf::Event event;
         while (window.pollEvent(event)) {
@@ -75,7 +85,6 @@ int main() {
               window.close();
           }
         }
-        float frametime = clock.restart().asSeconds();
         window.clear(sf::Color::White);
         // Benchmark.
         benchmark.update(frametime);
