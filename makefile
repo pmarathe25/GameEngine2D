@@ -48,7 +48,7 @@ $(BUILDDIR)/PhysicsSystem.o: $(SRCDIR)/System/PhysicsSystem.cpp $(INCLUDEDIR)/Ga
 	$(CXX) $(CFLAGS) $(SRCDIR)/System/PhysicsSystem.cpp -o $(BUILDDIR)/PhysicsSystem.o
 
 clean:
-	rm $(OBJS)
+	rm $(OBJS) $(TESTDIR)/test
 
 test: $(TESTDIR)/test
 	$(TESTDIR)/test
