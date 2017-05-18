@@ -31,7 +31,7 @@ void Entity::updateCommponent(int systemID, int index) {
     components[systemID] = index;
 }
 
-std::map<int, int>& Entity::getComponentMap() {
+std::unordered_map<int, int>& Entity::getComponentMap() {
     return components;
 }
 

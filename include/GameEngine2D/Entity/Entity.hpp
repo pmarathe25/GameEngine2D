@@ -3,7 +3,7 @@
 #include "GameEngine2D/Component/Component.hpp"
 #include <SFML/Graphics.hpp>
 #include <string>
-#include <map>
+#include <unordered_map>
 
 class Entity {
     public:
@@ -17,14 +17,14 @@ class Entity {
         // Update an exsiting component's index.
         void updateCommponent(int systemID, int index);
         // Get the component map.
-        std::map<int, int>& getComponentMap();
+        std::unordered_map<int, int>& getComponentMap();
         // Activate or deactivate the entity.
         bool isActive();
         void activate();
         void deactivate();
     private:
         // Data members.
-        std::map<int, int> components;
+        std::unordered_map<int, int> components;
         bool bActive = true;
 };
 

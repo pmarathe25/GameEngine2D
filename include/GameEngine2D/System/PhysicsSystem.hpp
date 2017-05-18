@@ -3,8 +3,6 @@
 #include "GameEngine2D/System/System.hpp"
 #include "GameEngine2D/Component/PhysicsComponent.hpp"
 #include "GameEngine2D/SubscriberQueue.hpp"
-#include <vector>
-#include <utility>
 #include <deque>
 
 class PhysicsSystem : public System<PhysicsComponent> {

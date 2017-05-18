@@ -20,7 +20,7 @@ int EntityManager::createEntity() {
 
 void EntityManager::destroyEntity(int eID) {
     // Remove all of this entity's components.
-    for (std::map<int, int>::iterator componentTuple = entities[eID].getComponentMap().begin(); componentTuple != entities[eID].getComponentMap().end(); ++componentTuple) {
+    for (std::unordered_map<int, int>::iterator componentTuple = entities[eID].getComponentMap().begin(); componentTuple != entities[eID].getComponentMap().end(); ++componentTuple) {
         systems[componentTuple -> first] -> removeComponentByIndex(componentTuple -> second, true);
     }
     // Push it to the free IDs deque.

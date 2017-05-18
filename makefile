@@ -4,9 +4,9 @@ SRCDIR = src/
 TESTDIR = test/
 LIBDIR = lib/
 LIBS =
-OBJS = $(BUILDDIR)/Component.o $(BUILDDIR)/EntityManager.o $(BUILDDIR)/Entity.o $(BUILDDIR)/ResourceManager.o \
- 	$(BUILDDIR)/RenderComponent.o $(BUILDDIR)/RenderSystem.o $(BUILDDIR)/PhysicsComponent.o $(BUILDDIR)/PhysicsSystem.o
-TESTOBJS =  $(BUILDDIR)/tester.o
+OBJS = $(addprefix $(BUILDDIR)/, Component.o EntityManager.o Entity.o ResourceManager.o RenderComponent.o \
+		RenderSystem.o PhysicsComponent.o PhysicsSystem.o CollisionComponent.o)
+TESTOBJS = $(BUILDDIR)/tester.o
 CXX = g++
 CFLAGS = -fPIC -c -I$(INCLUDEDIR) -std=c++14
 LFLAGS = -lsfml-graphics -lsfml-window -lsfml-system
@@ -46,6 +46,10 @@ $(BUILDDIR)/PhysicsComponent.o: $(SRCDIR)/Component/PhysicsComponent.cpp $(INCLU
 $(BUILDDIR)/PhysicsSystem.o: $(SRCDIR)/System/PhysicsSystem.cpp $(INCLUDEDIR)/GameEngine2D/System/PhysicsSystem.hpp \
 	$(INCLUDEDIR)/GameEngine2D/Component/PhysicsComponent.hpp $(INCLUDEDIR)/GameEngine2D/System/System.hpp $(INCLUDEDIR)/GameEngine2D/SubscriberQueue.hpp
 	$(CXX) $(CFLAGS) $(SRCDIR)/System/PhysicsSystem.cpp -o $(BUILDDIR)/PhysicsSystem.o
+
+$(BUILDDIR)/CollisionComponent.o: $(SRCDIR)/Component/CollisionComponent.cpp $(INCLUDEDIR)/GameEngine2D/Component/CollisionComponent.hpp \
+	$(INCLUDEDIR)/GameEngine2D/Component/Component.hpp
+	$(CXX) $(CFLAGS) $(SRCDIR)/Component/CollisionComponent.cpp -o $(BUILDDIR)/CollisionComponent.o
 
 clean:
 	rm $(OBJS) $(TESTDIR)/test

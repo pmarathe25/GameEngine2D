@@ -1,6 +1,6 @@
 #ifndef SUBSCRIBER_QUEUE
 #define SUBSCRIBER_QUEUE
-#include <iostream>
+#include <map>
 
 template <class QueueType>
 class SubscriberQueue {

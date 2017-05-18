@@ -5,9 +5,9 @@
 #include <SFML/Window.hpp>
 #include <SFML/Graphics.hpp>
 #include <string>
-#include <map>
+#include <unordered_map>
 #include <vector>
-#include <deque>
+#include <list>
 
 class SystemParent;
 
@@ -23,8 +23,8 @@ class EntityManager {
         int size();
     private:
         std::vector<Entity> entities;
-        std::deque<int> freeIDs;
-        std::map <int, SystemParent*> systems;
+        std::list<int> freeIDs;
+        std::unordered_map <int, SystemParent*> systems;
         void updateEntity(int eID, std::string cID, int componentIndex);
 };
 
