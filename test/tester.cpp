@@ -6,8 +6,8 @@
 #include <iomanip>
 #include <limits>
 
-const int WINDOW_X = 1280;
-const int WINDOW_Y = 720;
+const int WINDOW_X = 1600;
+const int WINDOW_Y = 900;
 
 class Benchmark {
     public:

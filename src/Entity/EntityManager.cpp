@@ -28,8 +28,8 @@ void EntityManager::destroyEntity(int eID) {
     entities[eID].deactivate();
 }
 
-void EntityManager::registerSystems(std::vector<SystemParent*> unregisteredSystems) {
-    for (std::vector<SystemParent*>::iterator sys = unregisteredSystems.begin(); sys != unregisteredSystems.end(); ++sys) {
+void EntityManager::registerSystems(std::vector<SystemBase*> unregisteredSystems) {
+    for (std::vector<SystemBase*>::iterator sys = unregisteredSystems.begin(); sys != unregisteredSystems.end(); ++sys) {
         systems[(*sys) -> getSystemID()] = *sys;
     }
 }

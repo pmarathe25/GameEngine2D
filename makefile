@@ -8,7 +8,7 @@ OBJS = $(addprefix $(BUILDDIR)/, Component.o EntityManager.o Entity.o ResourceMa
 		RenderSystem.o PhysicsComponent.o PhysicsSystem.o CollisionComponent.o)
 TESTOBJS = $(BUILDDIR)/tester.o
 CXX = g++
-CFLAGS = -fPIC -c -I$(INCLUDEDIR) -std=c++14
+CFLAGS = -fPIC -c -I$(INCLUDEDIR) -std=c++17
 LFLAGS = -lsfml-graphics -lsfml-window -lsfml-system
 
 $(TESTDIR)/test: $(OBJS) $(TESTOBJS)

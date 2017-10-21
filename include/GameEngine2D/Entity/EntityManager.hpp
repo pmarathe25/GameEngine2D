@@ -9,14 +9,14 @@
 #include <vector>
 #include <list>
 
-class SystemParent;
+class SystemBase;
 
 class EntityManager {
     public:
         EntityManager();
         int createEntity();
         void destroyEntity(int eID);
-        void registerSystems(std::vector<SystemParent*> unregisteredSystems);
+        void registerSystems(std::vector<SystemBase*> unregisteredSystems);
         Entity* getEntity(int eID);
         Entity* getEntity(const Component& component);
         Entity* getEntity(const Component* component);
@@ -24,7 +24,7 @@ class EntityManager {
     private:
         std::vector<Entity> entities;
         std::list<int> freeIDs;
-        std::unordered_map <int, SystemParent*> systems;
+        std::unordered_map <int, SystemBase*> systems;
         void updateEntity(int eID, std::string cID, int componentIndex);
 };
 

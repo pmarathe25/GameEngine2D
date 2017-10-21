@@ -4,7 +4,7 @@
 #include "GameEngine2D/Entity/EntityManager.hpp"
 #include <vector>
 
-class SystemParent {
+class SystemBase {
     public:
         int getSystemID() {
             return systemID;
@@ -18,7 +18,7 @@ class SystemParent {
 };
 
 template <class ComponentType>
-class System : public SystemParent {
+class System : public SystemBase {
     public:
         System(EntityManager& entityManager, int systemID) {
             this -> entityManager = &entityManager;
@@ -82,37 +82,23 @@ class System : public SystemParent {
             }
         }
 
-        // Get a reference to a component.
         ComponentType* getComponentByIndex(int index) {
             return &components[index];
         }
 
-        // Get a reference to a component by its owning entity id.
         ComponentType* getComponentByEntityID(int eID) {
             int index = entityManager -> getEntity(eID) -> getComponentIndexByID(getSystemID());
-            if (index != -1) {
-                return getComponentByIndex(index);
-            } else {
-                return NULL;
-            }
+            return (index != -1) ? getComponentByIndex(index) : NULL;
         }
 
         ComponentType* getComponentByMatchingComponent(Component& component) {
             int index = entityManager -> getEntity(component) -> getComponentIndexByID(getSystemID());
-            if (index != -1) {
-                return getComponentByIndex(index);
-            } else {
-                return NULL;
-            }
+            return (index != -1) ? getComponentByIndex(index) : NULL;
         }
 
         ComponentType* getComponentByMatchingComponent(Component* component) {
             int index = entityManager -> getEntity(component) -> getComponentIndexByID(getSystemID());
-            if (index != -1) {
-                return getComponentByIndex(index);
-            } else {
-                return NULL;
-            }
+            return (index != -1) ? getComponentByIndex(index) : NULL;
         }
 
         int size() {

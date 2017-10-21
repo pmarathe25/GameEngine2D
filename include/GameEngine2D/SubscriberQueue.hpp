@@ -39,11 +39,11 @@ class SubscriberQueue {
             }
         }
 
-        auto front() {
+        auto& front() {
             return queue.front();
         }
 
-        auto back() {
+        auto& back() {
             return queue.back();
         }
 
