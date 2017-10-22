@@ -11,9 +11,9 @@ namespace StealthEngine {
             void update(float frametime = 0);
             bool addComponent(int eID, sf::Vector2f position, float rotation = 0, sf::Vector2f scale = {});
             bool removeComponent(int eID);
-            const sf::Vector2f& getPosition(int eID);
-            float getRotation(int eID);
-            const sf::Vector2f& getScale(int eID);
+            const sf::Vector2f& getPosition(int eID) const;
+            float getRotation(int eID) const;
+            const sf::Vector2f& getScale(int eID) const;
         private:
             std::vector<sf::Vector2f> positions;
             std::vector<float> rotations;

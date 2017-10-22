@@ -13,7 +13,7 @@ namespace StealthEngine {
             void update(float frametime = 0);
             bool addComponent(int eID, const sf::Texture& texture, const sf::Vector2f& position = {});
             bool removeComponent(int eID);
-            const sf::Sprite& getSprite(int eID);
+            const sf::Sprite& getSprite(int eID) const;
         private:
             std::vector<sf::Sprite> sprites;
             sf::RenderWindow& window;

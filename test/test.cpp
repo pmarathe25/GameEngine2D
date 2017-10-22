@@ -13,13 +13,14 @@ int main() {
     // Window
     sf::RenderWindow window(sf::VideoMode(WINDOW_X, WINDOW_Y), "ECS Test");
     // Create Systems.
-    StealthEngine::TransformSystem transformSystem;
-    StealthEngine::StaticRenderSystem staticRenderSystem(window);
+    // StealthEngine::TransformSystem transformSystem;
+    // StealthEngine::StaticRenderSystem staticRenderSystem(window);
     // Entity Manager
-    StealthEngine::EntityManager entityManager(transformSystem, staticRenderSystem);
+    // StealthEngine::EntityManager entityManager(transformSystem, staticRenderSystem);
+    StealthEngine::EntityManager entityManager(StealthEngine::TransformSystem{}, StealthEngine::StaticRenderSystem{window});
     // Add some components.
     for (int i = 0; i < 100; ++i) {
-        staticRenderSystem.addComponent(entityManager.createEntity(), resourceManager.get<sf::Texture>("res/player.png"), {i * 10.0, i * 10.0});
+        entityManager.get<StealthEngine::StaticRenderSystem>().addComponent(entityManager.createEntity(), resourceManager.get<sf::Texture>("res/player.png"), {i * 10.0, i * 10.0});
     }
     // Remove all the entities!
     // for (int i = 0; i < 100; ++i) {

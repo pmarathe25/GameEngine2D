@@ -2,7 +2,7 @@
 
 namespace StealthEngine {
     void TransformSystem::update(float frametime) {
-        
+
     }
 
     bool TransformSystem::addComponent(int eID, sf::Vector2f position, float rotation, sf::Vector2f scale) {
@@ -15,15 +15,15 @@ namespace StealthEngine {
         return System<TransformSystem>::removeComponent(eID, positions, rotations, scales);
     }
 
-    const sf::Vector2f& TransformSystem::getPosition(int eID) {
+    const sf::Vector2f& TransformSystem::getPosition(int eID) const {
         return positions[eID];
     }
 
-    float TransformSystem::getRotation(int eID) {
+    float TransformSystem::getRotation(int eID) const {
         return rotations[eID];
     }
 
-    const sf::Vector2f& TransformSystem::getScale(int eID) {
+    const sf::Vector2f& TransformSystem::getScale(int eID) const {
         return scales[eID];
     }
 
