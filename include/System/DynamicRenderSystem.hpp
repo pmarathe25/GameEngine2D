@@ -11,6 +11,7 @@ namespace StealthEngine {
         public:
             DynamicRenderSystem(sf::RenderWindow& window, const TransformSystem& transformSystem) : StaticRenderSystem(window), transformSystem(transformSystem) { }
             void update(float frametime);
+            bool addComponent(int eID, const sf::Texture& texture);
         private:
             const TransformSystem& transformSystem;
     };

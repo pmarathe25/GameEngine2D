@@ -46,12 +46,37 @@ namespace StealthEngine {
                     // Now update the modified entity's mapping to reflect the change.
                     int modifiedEntity = componentEntity.back();
                     entityComponent[modifiedEntity] = index;
+                    // Now remove from the old entity.
+                    entityComponent.erase(eID);
                     componentEntity.pop_back();
                     return true;
                 }
                 return false;
             }
         protected:
+            template <typename... Args>
+            void swap(int indexA, int indexB, Args&... args) {
+                // First update the mappings.
+                int eIDA = componentEntity[indexA], eIDB = componentEntity[indexB];
+                entityComponent[eIDA] = indexB;
+                entityComponent[eIDB] = indexA;
+                componentEntity[indexA] = eIDB;
+                componentEntity[indexB] = eIDA;
+                if constexpr (sizeof...(args) != 0) {
+                    swapRecursive(indexA, indexB, args...);
+                }
+            }
+
+            template <typename Vec, typename... Args>
+            void swapRecursive(int indexA, int indexB, Vec& vec, Args&... args) {
+                auto temp = vec[indexA];
+                vec[indexA] = vec[indexB];
+                vec[indexB] = temp;
+                if constexpr (sizeof...(args) != 0) {
+                    swapRecursive(indexA, indexB, args...);
+                }
+            }
+
             template <typename T>
             T& get(int eID, std::vector<T>& vec) {
                 return vec[entityComponent[eID]];
@@ -59,7 +84,11 @@ namespace StealthEngine {
 
             template <typename T>
             const T& get(int eID, const std::vector<T>& vec) const {
-                return vec[entityComponent.at(eID)];
+                try {
+                    return vec[entityComponent.at(eID)];
+                } catch (std::out_of_range& e) {
+                    throw std::invalid_argument("Entity not present in system.");
+                }
             }
 
             template <typename Vec, typename Elem, typename... Args>

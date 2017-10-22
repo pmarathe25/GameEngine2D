@@ -3,7 +3,7 @@
 #include <tuple>
 #include <utility>
 #include <typeinfo>
-#include <queue>
+#include <deque>
 
 typedef int Entity;
 
@@ -34,7 +34,7 @@ namespace StealthEngine {
             Entity createEntity() {
                 if (!freeList.empty()) {
                     Entity newEID = freeList.front();
-                    freeList.pop();
+                    freeList.pop_front();
                     return newEID;
                 }
                 return currentEntity++;
@@ -44,7 +44,7 @@ namespace StealthEngine {
                 if constexpr (sizeof...(Systems) != 0) {
                     destroyEntityUnpacker(entity, std::index_sequence_for<Systems...>{});
                 }
-                freeList.push(entity);
+                freeList.push_back(entity);
                 return true;
             }
         private:
@@ -92,7 +92,7 @@ namespace StealthEngine {
             }
             // Keep track of systems.
             std::tuple<Systems&...> systems;
-            std::queue<int> freeList;
+            std::deque<int> freeList;
             Entity currentEntity = 0;
     };
 } /* StealthEngine */
