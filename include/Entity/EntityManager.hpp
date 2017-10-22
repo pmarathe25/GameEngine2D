@@ -11,7 +11,7 @@ namespace StealthEngine {
     template <typename... Systems>
     class EntityManager {
         public:
-            EntityManager(Systems... systems) : systems(systems...) { }
+            EntityManager(Systems&... systems) : systems(systems...) { }
             // Update all systems
             void update(float frametime) {
                 if constexpr (sizeof...(Systems) != 0) {
@@ -42,6 +42,7 @@ namespace StealthEngine {
                 return true;
             }
         private:
+            // Update
             template <size_t... S>
             void updateUnpacker(float frametime, std::index_sequence<S...>) {
                     updateRecursive(frametime, std::get<S>(systems)...);
@@ -55,6 +56,7 @@ namespace StealthEngine {
                 }
             }
 
+            // Get function
             template <typename SystemType, size_t... S>
             SystemType& getUnpacker(std::index_sequence<S...>) {
                 return getRecursive<SystemType>(std::get<S>(systems)...);
@@ -69,7 +71,7 @@ namespace StealthEngine {
                 }
             }
 
-
+            // Destroy entity
             template <size_t... S>
             void destroyEntityUnpacker(Entity entity, std::index_sequence<S...>) {
                 destroyEntityRecursive(entity, std::get<S>(systems)...);
@@ -83,7 +85,7 @@ namespace StealthEngine {
                 }
             }
             // Keep track of systems.
-            std::tuple<Systems...> systems;
+            std::tuple<Systems&...> systems;
             std::queue<int> freeList;
             Entity currentEntity = 0;
     };
