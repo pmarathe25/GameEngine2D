@@ -13,7 +13,7 @@ LFLAGS = -lsfml-graphics -lsfml-window -lsfml-system
 $(TESTDIR)/test: $(TESTOBJS) $(OBJS)
 	$(CXX) $(TESTOBJS) $(OBJS) $(LFLAGS) -o $(TESTDIR)/test
 
-$(BUILDDIR)/test.o: test/test.cpp include/ResourceManager.hpp
+$(BUILDDIR)/test.o: test/test.cpp include/ResourceManager.hpp include/Entity/EntityManager.hpp include/Entity/EntityFactory.hpp
 	$(CXX) $(CFLAGS) test/test.cpp -o $(BUILDDIR)/test.o
 
 $(BUILDDIR)/ResourceManager.o: $(SRCDIR)/ResourceManager.cpp include/ResourceManager.hpp

@@ -4,14 +4,35 @@
 #include "System/TransformSystem.hpp"
 #include "System/StaticRenderSystem.hpp"
 #include "System/DynamicRenderSystem.hpp"
-#include <set>
+#include <algorithm>
+#include <vector>
 
 typedef int Entity;
-typedef std::set<Entity> EntityGroup;
 
 namespace StealthEngine {
     enum EntityType {
         PLAYER = 0,
+    };
+
+    class EntityGroup : public std::vector<Entity> {
+        template <typename EntityManager>
+        friend class EntityFactory;
+        public:
+            void push_back(const Entity& entity) {
+                if (std::find(begin(), end(), entity) == end()) {
+                    std::vector<Entity>::push_back(entity);
+                }
+            }
+
+            void push_back(Entity&& entity) {
+                if (std::find(begin(), end(), entity) == end()) {
+                    std::vector<Entity>::push_back(std::move(entity));
+                }
+            }
+        private:
+            void push_back_unsafe(Entity entity) {
+                std::vector<Entity>::push_back(entity);
+            }
     };
 
     template <typename EntityManager>
@@ -21,17 +42,19 @@ namespace StealthEngine {
             // Create a single entity.
             template <EntityType N = 0>
             Entity createEntity() {
+                Entity entity = entityManager.createEntity();
                 if constexpr (N == PLAYER) {
-                    entityManager.get<StealthEngine::TransformSystem>().addComponent(entity);
-                    entityManager.get<StealthEngine::DynamicRenderSystem>().addComponent(entity, resourceManager.get<sf::Texture>("res/player.png"));
+                    entityManager.template get<StealthEngine::TransformSystem>().addComponent(entity);
+                    entityManager.template get<StealthEngine::DynamicRenderSystem>().addComponent(entity, resourceManager.get<sf::Texture>("res/player.png"));
                 }
+                return entity;
             }
             // Create a group of entities.
             template <EntityType N = 0>
             EntityGroup createEntityGroup(int numEntities) {
                 EntityGroup newGroup;
                 for (int i = 0; i < numEntities; ++i) {
-                    newGroup.insert(createEntity<N>());
+                    newGroup.push_back_unsafe(createEntity<N>());
                 }
                 return newGroup;
             }

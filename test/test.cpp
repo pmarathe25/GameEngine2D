@@ -3,8 +3,9 @@
 #include "System/StaticRenderSystem.hpp"
 #include "System/DynamicRenderSystem.hpp"
 #include "Entity/EntityManager.hpp"
-#include <iostream>
+#include "Entity/EntityFactory.hpp"
 #include <SFML/Window.hpp>
+#include <iostream>
 
 const int WINDOW_X = 1280;
 const int WINDOW_Y = 720;
@@ -19,12 +20,12 @@ int main() {
     StealthEngine::DynamicRenderSystem dynamicRenderSystem{window, transformSystem};
     // Entity Manager
     StealthEngine::EntityManager entityManager(transformSystem, staticRenderSystem, dynamicRenderSystem);
-    // Add some components.
-    for (int i = 0; i < 100; ++i) {
-        Entity entity = entityManager.createEntity();
-        entityManager.get<StealthEngine::StaticRenderSystem>().addComponent(entity, resourceManager.get<sf::Texture>("res/player.png"), {i * 10.0, i * 10.0});
-        entityManager.get<StealthEngine::TransformSystem>().addComponent(entity, {WINDOW_X - i * 10.0, i * 10.0});
-        entityManager.get<StealthEngine::DynamicRenderSystem>().addComponent(entity, resourceManager.get<sf::Texture>("res/player.png"));
+    // Entity Factory
+    StealthEngine::EntityFactory entityFactory(entityManager, resourceManager);
+    // Create a group of "player" entities in the entityManager.
+    StealthEngine::EntityGroup players = entityFactory.createEntityGroup<StealthEngine::PLAYER>(100);
+    for (auto& player : players) {
+        entityManager.get<StealthEngine::TransformSystem>().position(player) = {50, 50};
     }
     // Remove all the entities!
     // for (int i = 0; i < 100; ++i) {
