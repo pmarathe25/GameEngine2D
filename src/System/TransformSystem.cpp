@@ -31,7 +31,7 @@ namespace StealthEngine {
         return System<TransformSystem>::get(eID, positions);
     }
 
-    const float& TransformSystem::rotation(int eID) const {
+    float TransformSystem::rotation(int eID) const {
         return System<TransformSystem>::get(eID, rotations);
     }
 

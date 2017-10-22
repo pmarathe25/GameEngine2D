@@ -16,7 +16,7 @@ namespace StealthEngine {
             sf::Vector2f& scale(int eID);
             // Constant accessors.
             const sf::Vector2f& position(int eID) const;
-            const float& rotation(int eID) const;
+            float rotation(int eID) const;
             const sf::Vector2f& scale(int eID) const;
         private:
             std::vector<sf::Vector2f> positions;
