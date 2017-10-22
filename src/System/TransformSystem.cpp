@@ -15,16 +15,28 @@ namespace StealthEngine {
         return System<TransformSystem>::removeComponent(eID, positions, rotations, scales);
     }
 
-    const sf::Vector2f& TransformSystem::getPosition(int eID) const {
-        return positions[eID];
+    sf::Vector2f& TransformSystem::position(int eID) {
+        return System<TransformSystem>::get(eID, positions);
     }
 
-    float TransformSystem::getRotation(int eID) const {
-        return rotations[eID];
+    float& TransformSystem::rotation(int eID) {
+        return System<TransformSystem>::get(eID, rotations);
     }
 
-    const sf::Vector2f& TransformSystem::getScale(int eID) const {
-        return scales[eID];
+    sf::Vector2f& TransformSystem::scale(int eID) {
+        return System<TransformSystem>::get(eID, scales);
+    }
+
+    const sf::Vector2f& TransformSystem::position(int eID) const {
+        return System<TransformSystem>::get(eID, positions);
+    }
+
+    const float& TransformSystem::rotation(int eID) const {
+        return System<TransformSystem>::get(eID, rotations);
+    }
+
+    const sf::Vector2f& TransformSystem::scale(int eID) const {
+        return System<TransformSystem>::get(eID, scales);
     }
 
 } /* StealthEngine */

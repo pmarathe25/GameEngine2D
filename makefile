@@ -4,7 +4,7 @@ SRCDIR = src/
 TESTDIR = test/
 LIBDIR = lib/
 LIBS =
-OBJS = $(addprefix $(BUILDDIR)/, TransformSystem.o StaticRenderSystem.o)
+OBJS = $(addprefix $(BUILDDIR)/, ResourceManager.o TransformSystem.o StaticRenderSystem.o DynamicRenderSystem.o)
 TESTOBJS = $(BUILDDIR)/test.o
 CXX = g++
 CFLAGS = -fPIC -c $(INCLUDE) -std=c++17
@@ -16,11 +16,17 @@ $(TESTDIR)/test: $(TESTOBJS) $(OBJS)
 $(BUILDDIR)/test.o: test/test.cpp include/ResourceManager.hpp
 	$(CXX) $(CFLAGS) test/test.cpp -o $(BUILDDIR)/test.o
 
+$(BUILDDIR)/ResourceManager.o: $(SRCDIR)/ResourceManager.cpp include/ResourceManager.hpp
+	$(CXX) $(CFLAGS) $(SRCDIR)/ResourceManager.cpp -o $(BUILDDIR)/ResourceManager.o
+
 $(BUILDDIR)/TransformSystem.o: $(SRCDIR)/System/TransformSystem.cpp include/System/TransformSystem.hpp include/System/System.hpp
 	$(CXX) $(CFLAGS) $(SRCDIR)/System/TransformSystem.cpp -o $(BUILDDIR)/TransformSystem.o
 
 $(BUILDDIR)/StaticRenderSystem.o: $(SRCDIR)/System/StaticRenderSystem.cpp include/System/StaticRenderSystem.hpp include/System/System.hpp
 	$(CXX) $(CFLAGS) $(SRCDIR)/System/StaticRenderSystem.cpp -o $(BUILDDIR)/StaticRenderSystem.o
+
+$(BUILDDIR)/DynamicRenderSystem.o: $(SRCDIR)/System/DynamicRenderSystem.cpp include/System/DynamicRenderSystem.hpp include/System/StaticRenderSystem.hpp
+	$(CXX) $(CFLAGS) $(SRCDIR)/System/DynamicRenderSystem.cpp -o $(BUILDDIR)/DynamicRenderSystem.o
 
 clean:
 	rm $(OBJS) $(TESTOBJS) $(TESTDIR)/test

@@ -18,9 +18,7 @@ namespace StealthEngine {
                 return std::get<Resource>(resources[filename]);
             }
             // Delete a resource.
-            bool remove(const std::string& filename) {
-                return resources.erase(filename);
-            }
+            bool remove(const std::string& filename);
         private:
             std::unordered_map<std::string, std::variant<sf::Texture>> resources;
     };

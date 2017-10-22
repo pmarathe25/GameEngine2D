@@ -10,11 +10,13 @@ namespace StealthEngine {
     class StaticRenderSystem : public System<StaticRenderSystem> {
         public:
             StaticRenderSystem(sf::RenderWindow& window) : window(window) { }
-            void update(float frametime = 0);
+            void update(float frametime);
             bool addComponent(int eID, const sf::Texture& texture, const sf::Vector2f& position = {});
             bool removeComponent(int eID);
-            const sf::Sprite& getSprite(int eID) const;
-        private:
+            sf::Sprite& sprite(int eID);
+            // Constant accessors
+            const sf::Sprite& sprite(int eID) const;
+        protected:
             std::vector<sf::Sprite> sprites;
             sf::RenderWindow& window;
     };

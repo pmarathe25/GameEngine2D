@@ -24,6 +24,12 @@ namespace StealthEngine {
                 static_assert(sizeof...(Systems) != 0, "No systems present");
                 return getUnpacker<SystemType>(std::index_sequence_for<Systems...>{});
             }
+            // Get system by its position
+            template <int N = 0, typename SystemType>
+            SystemType& get() {
+                static_assert(sizeof...(Systems) != 0, "No systems present");
+                return std::get<N>(systems);
+            }
             // Return a new entity (or a previously deleted one)
             Entity createEntity() {
                 if (!freeList.empty()) {
