@@ -15,7 +15,7 @@ namespace StealthEngine {
     }
 
     bool StaticRenderSystem::removeComponent(int eID) {
-        return System<StaticRenderSystem>::removeComponent(eID);
+        return System<StaticRenderSystem>::removeComponent(eID, sprites);
     }
 
     const sf::Sprite& StaticRenderSystem::getSprite(int eID) {

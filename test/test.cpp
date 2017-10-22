@@ -16,12 +16,15 @@ int main() {
     StealthEngine::TransformSystem transformSystem;
     StealthEngine::StaticRenderSystem staticRenderSystem(window);
     // Entity Manager
-    StealthEngine::EntityManager entityManager;
-    entityManager.destroyEntity(0);
+    StealthEngine::EntityManager entityManager(transformSystem, staticRenderSystem);
     // Add some components.
     for (int i = 0; i < 100; ++i) {
-        staticRenderSystem.addComponent(i, resourceManager.get<sf::Texture>("res/player.png"), {i * 10.0, i * 10.0});
+        staticRenderSystem.addComponent(entityManager.createEntity(), resourceManager.get<sf::Texture>("res/player.png"), {i * 10.0, i * 10.0});
     }
+    // Remove all the entities!
+    // for (int i = 0; i < 100; ++i) {
+    //     entityManager.destroyEntity(i);
+    // }
     // Main Loop.
     sf::Clock clock;
     while (window.isOpen()) {
@@ -37,8 +40,7 @@ int main() {
         // Clear previous frame.
         window.clear(sf::Color::White);
         // Update all systems
-        transformSystem.update();
-        staticRenderSystem.update();
+        entityManager.update(frametime);
         // Display.
         window.display();
     }

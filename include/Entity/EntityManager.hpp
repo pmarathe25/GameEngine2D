@@ -11,7 +11,20 @@ namespace StealthEngine {
     class EntityManager {
         public:
             EntityManager(Systems&... systems) : systems(systems...) { }
-            Entity createEntity();
+            void update(float frametime) {
+                if constexpr (sizeof...(Systems) != 0) {
+                    updateUnpacker(frametime, std::index_sequence_for<Systems...>{});
+                }
+            }
+            // Return a new entity (or a previously deleted one)
+            Entity createEntity() {
+                if (!freeList.empty()) {
+                    Entity newEID = freeList.front();
+                    freeList.pop();
+                    return newEID;
+                }
+                return currentEntity++;
+            }
             // Destroy and remove from systems if present.
             bool destroyEntity(Entity entity) {
                 if constexpr (sizeof...(Systems) != 0) {
@@ -21,7 +34,20 @@ namespace StealthEngine {
                 return true;
             }
         private:
-            template <int... S>
+            template <size_t... S>
+            void updateUnpacker(float frametime, std::index_sequence<S...>) {
+                    updateRecursive(frametime, std::get<S>(systems)...);
+            }
+
+            template <typename FrontSystem, typename... BackSystems>
+            void updateRecursive(float frametime, FrontSystem& front, BackSystems&... back) {
+                front.update(frametime);
+                if constexpr (sizeof...(back) != 0) {
+                    updateRecursive(frametime, back...);
+                }
+            }
+
+            template <size_t... S>
             void destroyEntityUnpacker(Entity entity, std::index_sequence<S...>) {
                 destroyEntityRecursive(entity, std::get<S>(systems)...);
             }
@@ -33,6 +59,7 @@ namespace StealthEngine {
                     destroyEntityRecursive(entity, back...);
                 }
             }
+            // Keep track of systems.
             std::tuple<Systems&...> systems;
             std::queue<int> freeList;
             Entity currentEntity = 0;
