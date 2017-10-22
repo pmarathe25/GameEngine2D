@@ -12,12 +12,13 @@ namespace StealthEngine {
         public:
             EntityManager(Systems&... systems) : systems(systems...) { }
             Entity createEntity();
-
+            // Destroy and remove from systems if present.
             bool destroyEntity(Entity entity) {
                 if constexpr (sizeof...(Systems) != 0) {
                     destroyEntityUnpacker(entity, std::index_sequence_for<Systems...>{});
                 }
                 freeList.push(entity);
+                return true;
             }
         private:
             template <int... S>
