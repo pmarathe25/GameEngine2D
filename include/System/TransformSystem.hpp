@@ -8,7 +8,8 @@ namespace StealthEngine {
     class TransformSystem : public System<TransformSystem> {
         public:
             TransformSystem() { }
-            bool addComponent(int eID, sf::Vector2f position, float rotation, sf::Vector2f scale);
+            void update(float frametime = 0);
+            bool addComponent(int eID, sf::Vector2f position, float rotation = 0, sf::Vector2f scale = {});
             bool removeComponent(int eID);
             const sf::Vector2f& getPosition(int eID);
             float getRotation(int eID);
