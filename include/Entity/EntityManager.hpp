@@ -5,8 +5,6 @@
 #include <typeinfo>
 #include <deque>
 
-typedef int Entity;
-
 namespace StealthEngine {
     template <typename... Systems>
     class EntityManager {
@@ -31,16 +29,16 @@ namespace StealthEngine {
                 return std::get<N>(systems);
             }
             // Return a new entity (or a previously deleted one)
-            Entity createEntity() {
+            int createEntity() {
                 if (!freeList.empty()) {
-                    Entity newEID = freeList.front();
+                    int newEID = freeList.front();
                     freeList.pop_front();
                     return newEID;
                 }
                 return currentEntity++;
             }
             // Destroy and remove from systems if present.
-            bool destroyEntity(Entity entity) {
+            bool destroyEntity(int entity) {
                 if constexpr (sizeof...(Systems) != 0) {
                     destroyEntityUnpacker(entity, std::index_sequence_for<Systems...>{});
                 }
@@ -79,12 +77,12 @@ namespace StealthEngine {
 
             // Destroy entity
             template <size_t... S>
-            void destroyEntityUnpacker(Entity entity, std::index_sequence<S...>) {
+            void destroyEntityUnpacker(int entity, std::index_sequence<S...>) {
                 destroyEntityRecursive(entity, std::get<S>(systems)...);
             }
 
             template <typename FrontSystem, typename... BackSystems>
-            void destroyEntityRecursive(Entity entity, FrontSystem& front, BackSystems&... back) {
+            void destroyEntityRecursive(int entity, FrontSystem& front, BackSystems&... back) {
                 front.removeComponent(entity);
                 if constexpr (sizeof...(back) != 0) {
                     destroyEntityRecursive(entity, back...);
@@ -93,7 +91,7 @@ namespace StealthEngine {
             // Keep track of systems.
             std::tuple<Systems&...> systems;
             std::deque<int> freeList;
-            Entity currentEntity = 0;
+            int currentEntity = 0;
     };
 } /* StealthEngine */
 
