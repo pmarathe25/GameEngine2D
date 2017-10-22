@@ -30,6 +30,17 @@ namespace StealthEngine {
                 }
             }
         private:
+            bool destroyEntity(Entity entity) {
+                for (int i = 0; i < size(); ++i) {
+                    if ((*this)[i] == entity) {
+                        (*this)[i] = back();
+                        pop_back();
+                        return true;
+                    }
+                }
+                return false;
+            }
+
             void push_back_unsafe(Entity entity) {
                 std::vector<Entity>::push_back(entity);
             }
@@ -57,6 +68,21 @@ namespace StealthEngine {
                     newGroup.push_back_unsafe(createEntity<N>());
                 }
                 return newGroup;
+            }
+            // Destroy a single entity either standalone or from a group.
+            bool destroyEntity(Entity entity) {
+                return entityManager.destroyEntity(entity);
+            }
+            bool destroyEntity(EntityGroup& entityGroup, Entity entity) {
+                entityGroup.destroyEntity(entity);
+                return entityManager.destroyEntity(entity);
+            }
+            // Destroy an entity group.
+            void destroyEntityGroup(EntityGroup& entityGroup) {
+                for (auto& entity : entityGroup) {
+                    entityManager.destroyEntity(entity);
+                }
+                entityGroup = {};
             }
         private:
             EntityManager& entityManager;

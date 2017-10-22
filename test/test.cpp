@@ -27,6 +27,8 @@ int main() {
     for (auto& player : players) {
         entityManager.get<StealthEngine::TransformSystem>().position(player) = {50, 50};
     }
+
+    entityFactory.destroyEntityGroup(players);
     // Remove all the entities!
     // for (int i = 0; i < 100; ++i) {
     //     entityManager.destroyEntity(i);
