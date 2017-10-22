@@ -2,8 +2,8 @@
 #define ENTITY_FACTORY_H
 #include "ResourceManager.hpp"
 #include "System/TransformSystem.hpp"
-#include "System/StaticRenderSystem.hpp"
-#include "System/DynamicRenderSystem.hpp"
+#include "System/Render/StaticRenderSystem.hpp"
+#include "System/Render/DynamicRenderSystem.hpp"
 #include <algorithm>
 #include <vector>
 
@@ -29,8 +29,8 @@ namespace StealthEngine {
                     std::vector<Entity>::push_back(std::move(entity));
                 }
             }
-        private:
-            bool destroyEntity(Entity entity) {
+
+            bool removeFromGroup(Entity entity) {
                 for (int i = 0; i < size(); ++i) {
                     if ((*this)[i] == entity) {
                         (*this)[i] = back();
@@ -40,7 +40,7 @@ namespace StealthEngine {
                 }
                 return false;
             }
-
+        private:
             void push_back_unsafe(Entity entity) {
                 std::vector<Entity>::push_back(entity);
             }
@@ -73,8 +73,9 @@ namespace StealthEngine {
             bool destroyEntity(Entity entity) {
                 return entityManager.destroyEntity(entity);
             }
+            // Destroy an entity after removing it from a group.
             bool destroyEntity(EntityGroup& entityGroup, Entity entity) {
-                entityGroup.destroyEntity(entity);
+                entityGroup.removeFromGroup(entity);
                 return entityManager.destroyEntity(entity);
             }
             // Destroy an entity group.

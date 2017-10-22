@@ -22,11 +22,11 @@ $(BUILDDIR)/ResourceManager.o: $(SRCDIR)/ResourceManager.cpp include/ResourceMan
 $(BUILDDIR)/TransformSystem.o: $(SRCDIR)/System/TransformSystem.cpp include/System/TransformSystem.hpp include/System/System.hpp
 	$(CXX) $(CFLAGS) $(SRCDIR)/System/TransformSystem.cpp -o $(BUILDDIR)/TransformSystem.o
 
-$(BUILDDIR)/StaticRenderSystem.o: $(SRCDIR)/System/StaticRenderSystem.cpp include/System/StaticRenderSystem.hpp include/System/System.hpp
-	$(CXX) $(CFLAGS) $(SRCDIR)/System/StaticRenderSystem.cpp -o $(BUILDDIR)/StaticRenderSystem.o
+$(BUILDDIR)/StaticRenderSystem.o: $(SRCDIR)/System/Render/StaticRenderSystem.cpp include/System/Render/StaticRenderSystem.hpp include/System/System.hpp
+	$(CXX) $(CFLAGS) $(SRCDIR)/System/Render/StaticRenderSystem.cpp -o $(BUILDDIR)/StaticRenderSystem.o
 
-$(BUILDDIR)/DynamicRenderSystem.o: $(SRCDIR)/System/DynamicRenderSystem.cpp include/System/DynamicRenderSystem.hpp include/System/StaticRenderSystem.hpp
-	$(CXX) $(CFLAGS) $(SRCDIR)/System/DynamicRenderSystem.cpp -o $(BUILDDIR)/DynamicRenderSystem.o
+$(BUILDDIR)/DynamicRenderSystem.o: $(SRCDIR)/System/Render/DynamicRenderSystem.cpp include/System/Render/DynamicRenderSystem.hpp include/System/Render/StaticRenderSystem.hpp
+	$(CXX) $(CFLAGS) $(SRCDIR)/System/Render/DynamicRenderSystem.cpp -o $(BUILDDIR)/DynamicRenderSystem.o
 
 clean:
 	rm $(OBJS) $(TESTOBJS) $(TESTDIR)/test

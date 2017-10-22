@@ -79,7 +79,11 @@ namespace StealthEngine {
 
             template <typename T>
             T& get(int eID, std::vector<T>& vec) {
-                return vec[entityComponent[eID]];
+                try {
+                    return vec[entityComponent.at(eID)];
+                } catch (std::out_of_range& e) {
+                    throw std::invalid_argument("Entity not present in system.");
+                }
             }
 
             template <typename T>

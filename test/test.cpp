@@ -1,7 +1,7 @@
 #include "ResourceManager.hpp"
 #include "System/TransformSystem.hpp"
-#include "System/StaticRenderSystem.hpp"
-#include "System/DynamicRenderSystem.hpp"
+#include "System/Render/StaticRenderSystem.hpp"
+#include "System/Render/DynamicRenderSystem.hpp"
 #include "Entity/EntityManager.hpp"
 #include "Entity/EntityFactory.hpp"
 #include <SFML/Window.hpp>
@@ -25,14 +25,10 @@ int main() {
     // Create a group of "player" entities in the entityManager.
     StealthEngine::EntityGroup players = entityFactory.createEntityGroup<StealthEngine::PLAYER>(100);
     for (auto& player : players) {
-        entityManager.get<StealthEngine::TransformSystem>().position(player) = {50, 50};
+        entityManager.get<StealthEngine::TransformSystem>().position(player) = {player * 10, player * 10};
     }
-
-    entityFactory.destroyEntityGroup(players);
     // Remove all the entities!
-    // for (int i = 0; i < 100; ++i) {
-    //     entityManager.destroyEntity(i);
-    // }
+    // entityFactory.destroyEntityGroup(players);
     // Main Loop.
     sf::Clock clock;
     while (window.isOpen()) {

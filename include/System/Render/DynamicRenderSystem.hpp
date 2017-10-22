@@ -1,6 +1,6 @@
 #ifndef DYNAMIC_RENDER_SYSTEM_H
 #define DYNAMIC_RENDER_SYSTEM_H
-#include "System/StaticRenderSystem.hpp"
+#include "System/Render/StaticRenderSystem.hpp"
 #include "System/TransformSystem.hpp"
 #include <SFML/Graphics.hpp>
 #include <SFML/Window.hpp>

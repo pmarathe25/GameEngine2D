@@ -1,4 +1,4 @@
-#include "System/DynamicRenderSystem.hpp"
+#include "System/Render/DynamicRenderSystem.hpp"
 
 namespace StealthEngine {
     void DynamicRenderSystem::update(float frametime) {

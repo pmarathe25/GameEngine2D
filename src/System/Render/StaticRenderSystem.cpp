@@ -1,4 +1,4 @@
-#include "System/StaticRenderSystem.hpp"
+#include "System/Render/StaticRenderSystem.hpp"
 
 namespace StealthEngine {
     void StaticRenderSystem::update(float frametime) {
