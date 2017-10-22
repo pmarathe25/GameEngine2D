@@ -4,7 +4,7 @@ SRCDIR = src/
 TESTDIR = test/
 LIBDIR = lib/
 LIBS =
-OBJS = $(addprefix $(BUILDDIR)/, ResourceManager.o TransformSystem.o StaticRenderSystem.o DynamicRenderSystem.o PlayerMovementSystem.o)
+OBJS = $(addprefix $(BUILDDIR)/, ResourceManager.o TransformSystem.o StaticRenderSystem.o DynamicRenderSystem.o PlayerMovementSystem.o TopDownPlayerMovementSystem.o)
 TESTOBJS = $(BUILDDIR)/test.o
 CXX = g++
 CFLAGS = -fPIC -c $(INCLUDE) -std=c++17
@@ -21,6 +21,9 @@ $(BUILDDIR)/ResourceManager.o: $(SRCDIR)/ResourceManager.cpp include/ResourceMan
 
 $(BUILDDIR)/PlayerMovementSystem.o: $(SRCDIR)/System/Movement/PlayerMovementSystem.cpp include/System/Movement/PlayerMovementSystem.hpp include/System/System.hpp
 	$(CXX) $(CFLAGS) $(SRCDIR)/System/Movement/PlayerMovementSystem.cpp -o $(BUILDDIR)/PlayerMovementSystem.o
+
+$(BUILDDIR)/TopDownPlayerMovementSystem.o: $(SRCDIR)/System/Movement/TopDownPlayerMovementSystem.cpp include/System/Movement/TopDownPlayerMovementSystem.hpp include/System/System.hpp
+	$(CXX) $(CFLAGS) $(SRCDIR)/System/Movement/TopDownPlayerMovementSystem.cpp -o $(BUILDDIR)/TopDownPlayerMovementSystem.o
 
 $(BUILDDIR)/TransformSystem.o: $(SRCDIR)/System/TransformSystem.cpp include/System/TransformSystem.hpp include/System/System.hpp
 	$(CXX) $(CFLAGS) $(SRCDIR)/System/TransformSystem.cpp -o $(BUILDDIR)/TransformSystem.o

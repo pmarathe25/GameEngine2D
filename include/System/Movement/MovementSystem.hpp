@@ -5,7 +5,7 @@
 namespace StealthEngine {
     class MovementSystem : public System<MovementSystem> {
         public:
-            virtual void update(float frametime = 0) = 0;
+            virtual void update(float frametime) = 0;
     };
 } /* StealthEngine */
 

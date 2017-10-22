@@ -2,6 +2,7 @@
 #include "System/TransformSystem.hpp"
 #include "System/Render/StaticRenderSystem.hpp"
 #include "System/Render/DynamicRenderSystem.hpp"
+#include "System/Movement/TopDownPlayerMovementSystem.hpp"
 #include "Entity/EntityManager.hpp"
 #include "Entity/EntityFactory.hpp"
 #include <SFML/Window.hpp>
@@ -9,6 +10,13 @@
 
 const int WINDOW_X = 1280;
 const int WINDOW_Y = 720;
+
+const std::map<StealthEngine::Intent, sf::Keyboard::Key> keymap{
+    {StealthEngine::MOVE_UP, sf::Keyboard::W},
+    {StealthEngine::MOVE_DOWN, sf::Keyboard::S},
+    {StealthEngine::MOVE_LEFT, sf::Keyboard::A},
+    {StealthEngine::MOVE_RIGHT, sf::Keyboard::D},
+};
 
 int main() {
     StealthEngine::ResourceManager resourceManager;
@@ -18,8 +26,9 @@ int main() {
     StealthEngine::TransformSystem transformSystem{};
     StealthEngine::StaticRenderSystem staticRenderSystem{window};
     StealthEngine::DynamicRenderSystem dynamicRenderSystem{window, transformSystem};
+    StealthEngine::TopDownPlayerMovementSystem playerMovementSystem{keymap, transformSystem};
     // Entity Manager
-    StealthEngine::EntityManager entityManager(transformSystem, staticRenderSystem, dynamicRenderSystem);
+    StealthEngine::EntityManager entityManager(transformSystem, staticRenderSystem, dynamicRenderSystem, playerMovementSystem);
     // Entity Factory
     StealthEngine::EntityFactory entityFactory(entityManager, resourceManager);
     // Create a group of "player" entities in the entityManager.

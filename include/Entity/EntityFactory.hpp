@@ -57,6 +57,7 @@ namespace StealthEngine {
                 if constexpr (N == PLAYER) {
                     entityManager.template get<StealthEngine::TransformSystem>().addComponent(entity);
                     entityManager.template get<StealthEngine::DynamicRenderSystem>().addComponent(entity, resourceManager.get<sf::Texture>("res/player.png"));
+                    entityManager.template get<StealthEngine::TopDownPlayerMovementSystem>().addComponent(entity, 50);
                 }
                 return entity;
             }
