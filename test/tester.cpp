@@ -38,7 +38,7 @@ class Benchmark {
 
 int main() {
     ResourceManager resourceManager = ResourceManager();
-    resourceManager.addResourceDirectory("test/res/");
+    resourceManager.addResourceDirectory("res/");
     sf::RenderWindow window(sf::VideoMode(WINDOW_X, WINDOW_Y), "ECS Test");
     EntityManager entityManager = EntityManager();
     // Create some systems.
