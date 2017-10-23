@@ -9,7 +9,7 @@ namespace StealthEngine {
         // Loop over all components and apply the changes.
         for (int i = 0; i < movementSpeeds.size(); ++i) {
             int eID = componentEntity[i];
-            float movementSpeed = movementSpeeds[i] * frametime * ((deltaX && deltaY) * DIAGONALIZATION_FACTOR + !(deltaX && deltaY));
+            float movementSpeed = movementSpeeds[i] * frametime * (deltaX && deltaY) ? DIAGONALIZATION_FACTOR : 1;
             try {
                 transformSystem.position(eID) += {deltaX * movementSpeed, deltaY * movementSpeed};
             } catch (std::invalid_argument& e) {
