@@ -9,7 +9,7 @@
 namespace StealthEngine {
     class StaticRenderSystem : public System<StaticRenderSystem> {
         public:
-            StaticRenderSystem(sf::RenderWindow& window) : window(window) { }
+            StaticRenderSystem(World& world, EventManager& eventManager, sf::RenderWindow& window) : System<StaticRenderSystem>(world, eventManager), window(window) { }
             void update(float frametime);
             bool addComponent(int eID, const sf::Texture& texture, const sf::Vector2f& position = {});
             bool removeComponent(int eID);

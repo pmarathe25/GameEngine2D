@@ -1,9 +1,9 @@
 #include "ResourceManager.hpp"
-#include "System/TransformSystem.hpp"
+#include "World.hpp"
+#include "EventManager.hpp"
+#include "System/SystemManager.hpp"
 #include "System/Render/StaticRenderSystem.hpp"
 #include "System/Render/DynamicRenderSystem.hpp"
-#include "System/Movement/TopDownPlayerMovementSystem.hpp"
-#include "Entity/EntityManager.hpp"
 #include "Entity/EntityFactory.hpp"
 #include <SFML/Window.hpp>
 #include <iostream>
@@ -40,30 +40,33 @@ class Benchmark {
         int framerate = 0, minFramerate = std::numeric_limits<int>::max(), maxFramerate = -1;
 } benchmark;
 
-const std::map<StealthEngine::Intent, sf::Keyboard::Key> keymap{
-    {StealthEngine::MOVE_UP, sf::Keyboard::W},
-    {StealthEngine::MOVE_DOWN, sf::Keyboard::S},
-    {StealthEngine::MOVE_LEFT, sf::Keyboard::A},
-    {StealthEngine::MOVE_RIGHT, sf::Keyboard::D},
-};
+// const std::map<StealthEngine::Intent, sf::Keyboard::Key> keymap{
+//     {StealthEngine::MOVE_UP, sf::Keyboard::W},
+//     {StealthEngine::MOVE_DOWN, sf::Keyboard::S},
+//     {StealthEngine::MOVE_LEFT, sf::Keyboard::A},
+//     {StealthEngine::MOVE_RIGHT, sf::Keyboard::D},
+// };
 
 int main() {
+    // World, event and resource manager.
+    StealthEngine::EventManager eventManager;
+    StealthEngine::World world{eventManager};
     StealthEngine::ResourceManager resourceManager;
     // Window
     sf::RenderWindow window(sf::VideoMode(WINDOW_X, WINDOW_Y), "ECS Test");
     // Systems
-    StealthEngine::TransformSystem transformSystem{};
-    StealthEngine::StaticRenderSystem staticRenderSystem{window};
-    StealthEngine::DynamicRenderSystem dynamicRenderSystem{window, transformSystem};
-    StealthEngine::TopDownPlayerMovementSystem playerMovementSystem{keymap, transformSystem};
-    // Entity Manager
-    StealthEngine::EntityManager entityManager(transformSystem, staticRenderSystem, dynamicRenderSystem, playerMovementSystem);
+    StealthEngine::StaticRenderSystem staticRenderSystem{world, eventManager, window};
+    StealthEngine::DynamicRenderSystem dynamicRenderSystem{world, eventManager, window};
+    // System Manager
+    StealthEngine::SystemManager systemManager{staticRenderSystem, dynamicRenderSystem};
     // Entity Factory
-    StealthEngine::EntityFactory entityFactory(entityManager, resourceManager);
+    StealthEngine::EntityFactory entityFactory(world, systemManager, resourceManager);
     // Create a group of "player" entities in the entityManager.
-    StealthEngine::EntityGroup players = entityFactory.createEntityGroup<StealthEngine::PLAYER>(10000);
+    StealthEngine::EntityGroup players = entityFactory.createEntityGroup<StealthEngine::PLAYER>(150000);
+
+
     for (auto& player : players) {
-        entityManager.get<StealthEngine::TransformSystem>().position(player) = {player * 10, player * 10};
+        world.setPosition(player, {10, 10});
     }
     // Remove all the entities!
     // entityFactory.destroyEntityGroup(players);
@@ -82,7 +85,7 @@ int main() {
         // Clear previous frame.
         window.clear(sf::Color::White);
         // Update all systems
-        entityManager.update(frametime);
+        systemManager.update(frametime);
         // Display.
         window.display();
         // Benchmark.

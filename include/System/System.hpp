@@ -1,5 +1,6 @@
 #ifndef SYSTEM_H
 #define SYSTEM_H
+#include "World.hpp"
 #include <unordered_map>
 #include <vector>
 
@@ -7,16 +8,14 @@ namespace StealthEngine {
     template <typename SystemType>
     class System {
         public:
-            System() { }
-            // Call the child class' implementation.
+            System(World& world, EventManager& eventManager) : world(world), eventManager(eventManager) { }
             void update(float frametime) {
+                // Call the child class' implementation.
                 static_cast<SystemType*>(this) -> update(frametime);
             }
-
             bool hasEntity(int eID) const {
                 return entityComponent.count(eID) > 0;
             }
-
             // Add components to an entity and return whether the components were successfully added.
             template <typename... Args>
             bool addComponent(int eID, Args&... args) {
@@ -33,7 +32,6 @@ namespace StealthEngine {
                 componentEntity.emplace_back(eID);
                 return true;
             }
-
             // Removes components belonging to an entity and return whether the components were successfully removed.
             template <typename... Args>
             bool removeComponent(int eID, Args&... args) {
@@ -66,7 +64,6 @@ namespace StealthEngine {
                     swapRecursive(indexA, indexB, args...);
                 }
             }
-
             template <typename Vec, typename... Args>
             void swapRecursive(int indexA, int indexB, Vec& vec, Args&... args) {
                 auto temp = vec[indexA];
@@ -76,7 +73,7 @@ namespace StealthEngine {
                     swapRecursive(indexA, indexB, args...);
                 }
             }
-
+            // Get an element from a vector. 
             template <typename T>
             T& get(int eID, std::vector<T>& vec) {
                 try {
@@ -85,7 +82,6 @@ namespace StealthEngine {
                     throw std::invalid_argument("Entity not present in system.");
                 }
             }
-
             template <typename T>
             const T& get(int eID, const std::vector<T>& vec) const {
                 try {
@@ -113,6 +109,8 @@ namespace StealthEngine {
                 }
             }
 
+            World& world;
+            EventManager& eventManager;
             // All systems contain a map of entityIDs to componentIndex
             std::unordered_map<int, int> entityComponent;
             std::vector<int> componentEntity;

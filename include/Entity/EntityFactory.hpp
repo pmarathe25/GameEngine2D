@@ -1,13 +1,11 @@
 #ifndef ENTITY_FACTORY_H
 #define ENTITY_FACTORY_H
 #include "ResourceManager.hpp"
-#include "System/TransformSystem.hpp"
-#include "System/Render/StaticRenderSystem.hpp"
-#include "System/Render/DynamicRenderSystem.hpp"
+// #include "System/TransformSystem.hpp"
+// #include "System/Render/StaticRenderSystem.hpp"
+// #include "System/Render/DynamicRenderSystem.hpp"
 #include <algorithm>
 #include <vector>
-
-typedef int Entity;
 
 namespace StealthEngine {
     enum EntityType {
@@ -15,8 +13,10 @@ namespace StealthEngine {
     };
 
     class EntityGroup : public std::vector<Entity> {
-        template <typename EntityManager>
+
+        template <typename SystemManager>
         friend class EntityFactory;
+
         public:
             void push_back(const Entity& entity) {
                 if (std::find(begin(), end(), entity) == end()) {
@@ -46,18 +46,17 @@ namespace StealthEngine {
             }
     };
 
-    template <typename EntityManager>
+    template <typename SystemManager>
     class EntityFactory {
         public:
-            EntityFactory(EntityManager& entityManager, ResourceManager& resourceManager) : entityManager(entityManager), resourceManager(resourceManager) { }
+            EntityFactory(World& world, SystemManager& systemManager, ResourceManager& resourceManager) :
+                world(world), systemManager(systemManager), resourceManager(resourceManager) { }
             // Create a single entity.
             template <EntityType N = 0>
             Entity createEntity() {
-                Entity entity = entityManager.createEntity();
+                Entity entity = world.createEntity();
                 if constexpr (N == PLAYER) {
-                    entityManager.template get<StealthEngine::TransformSystem>().addComponent(entity);
-                    entityManager.template get<StealthEngine::DynamicRenderSystem>().addComponent(entity, resourceManager.get<sf::Texture>("res/player.png"));
-                    entityManager.template get<StealthEngine::TopDownPlayerMovementSystem>().addComponent(entity, 50);
+                    systemManager.template get<StealthEngine::DynamicRenderSystem>().addComponent(entity, resourceManager.get<sf::Texture>("res/player.png"));
                 }
                 return entity;
             }
@@ -72,22 +71,24 @@ namespace StealthEngine {
             }
             // Destroy a single entity either standalone or from a group.
             bool destroyEntity(Entity entity) {
-                return entityManager.destroyEntity(entity);
+                systemManager.destroyEntity(entity);
+                return world.destroyEntity(entity);
             }
             // Destroy an entity after removing it from a group.
             bool destroyEntity(EntityGroup& entityGroup, Entity entity) {
                 entityGroup.removeFromGroup(entity);
-                return entityManager.destroyEntity(entity);
+                return destroyEntity(entity);
             }
             // Destroy an entity group.
             void destroyEntityGroup(EntityGroup& entityGroup) {
                 for (auto& entity : entityGroup) {
-                    entityManager.destroyEntity(entity);
+                    destroyEntity(entity);
                 }
                 entityGroup = {};
             }
         private:
-            EntityManager& entityManager;
+            World& world;
+            SystemManager& systemManager;
             ResourceManager& resourceManager;
     };
 } /* StealthEngine */

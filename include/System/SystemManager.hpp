@@ -1,15 +1,12 @@
-#ifndef ENTITY_MANAGER_H
-#define ENTITY_MANAGER_H
+#ifndef SYSTEM_MANAGER_H
+#define SYSTEM_MANAGER_H
 #include <tuple>
-#include <utility>
-#include <typeinfo>
-#include <deque>
 
 namespace StealthEngine {
     template <typename... Systems>
-    class EntityManager {
+    class SystemManager {
         public:
-            EntityManager(Systems&... systems) : systems(systems...) { }
+            SystemManager(Systems&... systems) : systems(systems...) { }
             // Update all systems
             void update(float frametime) {
                 if constexpr (sizeof...(Systems) != 0) {
@@ -28,22 +25,13 @@ namespace StealthEngine {
                 static_assert(sizeof...(Systems) != 0, "No systems present");
                 return std::get<N>(systems);
             }
-            // Return a new entity (or a previously deleted one)
-            int createEntity() {
-                if (!freeList.empty()) {
-                    int newEID = freeList.front();
-                    freeList.pop_front();
-                    return newEID;
-                }
-                return currentEntity++;
-            }
             // Destroy and remove from systems if present.
             bool destroyEntity(int entity) {
                 if constexpr (sizeof...(Systems) != 0) {
                     destroyEntityUnpacker(entity, std::index_sequence_for<Systems...>{});
+                    return true;
                 }
-                freeList.push_back(entity);
-                return true;
+                return false;
             }
         private:
             // Update
@@ -90,8 +78,6 @@ namespace StealthEngine {
             }
             // Keep track of systems.
             std::tuple<Systems&...> systems;
-            std::deque<int> freeList;
-            int currentEntity = 0;
     };
 } /* StealthEngine */
 
