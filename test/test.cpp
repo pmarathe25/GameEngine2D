@@ -64,6 +64,8 @@ int main() {
     // Create a group of "player" entities in the entityManager.
     StealthEngine::EntityGroup players = entityFactory.createEntityGroup<StealthEngine::PLAYER>(150000);
 
+    StealthEngine::Entity ent = world.createEntity();
+    players.push_back(ent);
 
     for (auto& player : players) {
         world.setPosition(player, {10, 10});

@@ -31,7 +31,6 @@ namespace StealthEngine {
     void World::setPosition(Entity eID, const sf::Vector2f& position) {
         positions[eID] = position;
         eventManager.post<EventManager::POSITION_CHANGED>(std::forward<Entity>(eID), std::forward<const sf::Vector2f&>(position));
-        // eventManager.post<EventManager::POSITION_CHANGED>(eID, position);
     }
 
 } /* StealthEngine */

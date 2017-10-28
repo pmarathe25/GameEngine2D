@@ -5,9 +5,9 @@
 #include <vector>
 #include <set>
 
-typedef int Entity;
-
 namespace StealthEngine {
+    typedef int Entity;
+
     class World {
         public:
             World(EventManager& eventManager) : eventManager(eventManager) { }

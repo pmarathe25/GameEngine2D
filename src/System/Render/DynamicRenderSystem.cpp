@@ -9,13 +9,6 @@ namespace StealthEngine {
 
     void DynamicRenderSystem::update(float frametime) {
         for (int i = 0; i < sprites.size(); ++i) {
-            // Update positions before drawing.
-            // int eID = componentEntity[i];
-            // try {
-            //     // sprites[i].setPosition(transformSystem.position(eID));
-            // } catch (std::invalid_argument& e) {
-            //     throw std::invalid_argument("DynamicRenderSystem cannot update entities with no Transform component.");
-            // }
             window.draw(sprites[i]);
         }
     }
@@ -25,6 +18,8 @@ namespace StealthEngine {
     }
 
     void DynamicRenderSystem::onUpdatePosition(int eID, const sf::Vector2f& position) {
-        StaticRenderSystem::get(eID, sprites).setPosition(position);
+        if (hasEntity(eID)) {
+            get(eID, sprites).setPosition(position);
+        }
     }
 } /* StealthEngine */
