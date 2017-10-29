@@ -2,8 +2,7 @@
 #include "World.hpp"
 #include "EventManager.hpp"
 #include "System/SystemManager.hpp"
-#include "System/Render/StaticRenderSystem.hpp"
-#include "System/Render/DynamicRenderSystem.hpp"
+#include "System/Render/RenderSystem.hpp"
 #include "Entity/EntityFactory.hpp"
 #include <SFML/Window.hpp>
 #include <iostream>
@@ -55,10 +54,10 @@ int main() {
     // Window
     sf::RenderWindow window(sf::VideoMode(WINDOW_X, WINDOW_Y), "ECS Test");
     // Systems
-    StealthEngine::StaticRenderSystem staticRenderSystem{world, eventManager, window};
-    StealthEngine::DynamicRenderSystem dynamicRenderSystem{world, eventManager, window};
+    StealthEngine::RenderSystem staticRenderSystem{world, eventManager, window};
+    StealthEngine::RenderSystem renderSystem{world, eventManager, window};
     // System Manager
-    StealthEngine::SystemManager systemManager{staticRenderSystem, dynamicRenderSystem};
+    StealthEngine::SystemManager systemManager{staticRenderSystem, renderSystem};
     // Entity Factory
     StealthEngine::EntityFactory entityFactory(world, systemManager, resourceManager);
     // Create a group of "player" entities in the entityManager.

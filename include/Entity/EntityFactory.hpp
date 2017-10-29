@@ -20,7 +20,7 @@ namespace StealthEngine {
             Entity createEntity() {
                 Entity entity = world.createEntity();
                 if constexpr (N == PLAYER) {
-                    systemManager.template get<DynamicRenderSystem>().addComponent(entity, resourceManager.get<sf::Texture>("res/player.png"));
+                    systemManager.template get<RenderSystem>().addComponent(entity, resourceManager.get<sf::Texture>("res/player.png"));
                 }
                 return entity;
             }

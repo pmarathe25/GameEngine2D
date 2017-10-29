@@ -4,7 +4,7 @@ SRCDIR = src/
 TESTDIR = test/
 LIBDIR = lib/
 LIBS =
-OBJS = $(addprefix $(BUILDDIR)/, World.o ResourceManager.o StaticRenderSystem.o DynamicRenderSystem.o)
+OBJS = $(addprefix $(BUILDDIR)/, World.o ResourceManager.o RenderSystem.o)
 HEADERS = $(addprefix include/, $(addsuffix .hpp, ResourceManager World Entity/EntityFactory Entity/EntityGroup System/SystemManager EventManager))
 TESTOBJS = $(BUILDDIR)/test.o
 CXX = g++
@@ -23,13 +23,9 @@ $(BUILDDIR)/ResourceManager.o: $(SRCDIR)/ResourceManager.cpp include/ResourceMan
 $(BUILDDIR)/World.o: $(SRCDIR)/World.cpp include/World.hpp include/EventManager.hpp
 	$(CXX) $(CFLAGS) $(SRCDIR)/World.cpp -o $(BUILDDIR)/World.o
 
-$(BUILDDIR)/StaticRenderSystem.o: $(SRCDIR)/System/Render/StaticRenderSystem.cpp include/System/Render/StaticRenderSystem.hpp \
+$(BUILDDIR)/RenderSystem.o: $(SRCDIR)/System/Render/RenderSystem.cpp include/System/Render/RenderSystem.hpp \
 	include/System/System.hpp include/EventManager.hpp
-	$(CXX) $(CFLAGS) $(SRCDIR)/System/Render/StaticRenderSystem.cpp -o $(BUILDDIR)/StaticRenderSystem.o
-
-$(BUILDDIR)/DynamicRenderSystem.o: $(SRCDIR)/System/Render/DynamicRenderSystem.cpp include/System/Render/DynamicRenderSystem.hpp \
-	include/System/Render/StaticRenderSystem.hpp include/EventManager.hpp
-	$(CXX) $(CFLAGS) $(SRCDIR)/System/Render/DynamicRenderSystem.cpp -o $(BUILDDIR)/DynamicRenderSystem.o
+	$(CXX) $(CFLAGS) $(SRCDIR)/System/Render/RenderSystem.cpp -o $(BUILDDIR)/RenderSystem.o
 
 clean:
 	rm $(OBJS) $(TESTOBJS) $(TESTDIR)/test

@@ -18,14 +18,14 @@ namespace StealthEngine {
             }
             // Add components to an entity and return whether the components were successfully added.
             template <typename... Args>
-            bool addComponent(int eID, Args&... args) {
+            bool addComponent(int eID, Args&&... args) {
                 // Check if this entity already exists and if it does, disallow adding a component.
                 if (entityComponent.count(eID) > 0) {
                     throw std::invalid_argument("Cannot add duplicate component to entity");
                 }
                 // Recursively add all components.
                 if constexpr (sizeof...(args) != 0) {
-                    addComponentRecursive(args...);
+                    addComponentRecursive(std::forward<Args>(args)...);
                 }
                 // Update the entity -> component mapping and the component -> entity mapping
                 entityComponent[eID] = componentEntity.size();
@@ -73,7 +73,7 @@ namespace StealthEngine {
                     swapRecursive(indexA, indexB, args...);
                 }
             }
-            // Get an element from a vector. 
+            // Get an element from a vector.
             template <typename T>
             T& get(int eID, std::vector<T>& vec) {
                 try {
@@ -92,7 +92,7 @@ namespace StealthEngine {
             }
 
             template <typename Vec, typename Elem, typename... Args>
-            void addComponentRecursive(Vec& vec, Elem& elem, Args&... args) {
+            void addComponentRecursive(Vec& vec, Elem&& elem, Args&&... args) {
                 vec.emplace_back(elem);
                 if constexpr (sizeof...(args) != 0) {
                     addComponentRecursive(args...);
