@@ -4,7 +4,7 @@ SRCDIR = src/
 TESTDIR = test/
 LIBDIR = lib/
 LIBS =
-OBJS = $(addprefix $(BUILDDIR)/, World.o ResourceManager.o RenderSystem.o)
+OBJS = $(addprefix $(BUILDDIR)/, World.o ResourceManager.o RenderSystem.o EntityGroup.o)
 HEADERS = $(addprefix include/, $(addsuffix .hpp, ResourceManager World Entity/EntityFactory Entity/EntityGroup System/SystemManager EventManager))
 TESTOBJS = $(BUILDDIR)/test.o
 CXX = g++
@@ -22,6 +22,9 @@ $(BUILDDIR)/ResourceManager.o: $(SRCDIR)/ResourceManager.cpp include/ResourceMan
 
 $(BUILDDIR)/World.o: $(SRCDIR)/World.cpp include/World.hpp include/EventManager.hpp
 	$(CXX) $(CFLAGS) $(SRCDIR)/World.cpp -o $(BUILDDIR)/World.o
+
+$(BUILDDIR)/EntityGroup.o: $(SRCDIR)/Entity/EntityGroup.cpp include/Entity/EntityGroup.hpp
+	$(CXX) $(CFLAGS) $(SRCDIR)/Entity/EntityGroup.cpp -o $(BUILDDIR)/EntityGroup.o
 
 $(BUILDDIR)/RenderSystem.o: $(SRCDIR)/System/Render/RenderSystem.cpp include/System/Render/RenderSystem.hpp \
 	include/System/System.hpp include/EventManager.hpp

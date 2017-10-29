@@ -13,12 +13,13 @@ namespace StealthEngine {
                 // Call the child class' implementation.
                 static_cast<SystemType*>(this) -> update(frametime);
             }
-            bool hasEntity(int eID) const {
+            // Check if the system has a component belonging to an entity.
+            bool hasEntity(Entity eID) const {
                 return entityComponent.count(eID) > 0;
             }
             // Add components to an entity and return whether the components were successfully added.
             template <typename... Args>
-            bool addComponent(int eID, Args&&... args) {
+            bool addComponent(Entity eID, Args&&... args) {
                 // Check if this entity already exists and if it does, disallow adding a component.
                 if (entityComponent.count(eID) > 0) {
                     throw std::invalid_argument("Cannot add duplicate component to entity");
@@ -34,12 +35,12 @@ namespace StealthEngine {
             }
             // Removes components belonging to an entity and return whether the components were successfully removed.
             template <typename... Args>
-            bool removeComponent(int eID, Args&... args) {
+            bool removeComponent(Entity eID, Args&&... args) {
                 if (entityComponent.count(eID) > 0) {
                     int index = entityComponent[eID];
                     // Recursively remove all components.
                     if constexpr (sizeof...(args) != 0) {
-                        removeComponentRecursive(index, args...);
+                        removeComponentRecursive(index, std::forward<Args>(args)...);
                     }
                     // Now update the modified entity's mapping to reflect the change.
                     int modifiedEntity = componentEntity.back();
@@ -53,37 +54,39 @@ namespace StealthEngine {
             }
         protected:
             template <typename... Args>
-            void swap(int indexA, int indexB, Args&... args) {
+            void swap(int indexA, int indexB, Args&&... args) {
                 // First update the mappings.
-                int eIDA = componentEntity[indexA], eIDB = componentEntity[indexB];
+                Entity eIDA = componentEntity[indexA], eIDB = componentEntity[indexB];
                 entityComponent[eIDA] = indexB;
                 entityComponent[eIDB] = indexA;
                 componentEntity[indexA] = eIDB;
                 componentEntity[indexB] = eIDA;
                 if constexpr (sizeof...(args) != 0) {
-                    swapRecursive(indexA, indexB, args...);
+                    swapRecursive(indexA, indexB, std::forward<Args>(args)...);
                 }
             }
+
             template <typename Vec, typename... Args>
-            void swapRecursive(int indexA, int indexB, Vec& vec, Args&... args) {
+            void swapRecursive(int indexA, int indexB, Vec& vec, Args&&... args) {
                 auto temp = vec[indexA];
                 vec[indexA] = vec[indexB];
                 vec[indexB] = temp;
                 if constexpr (sizeof...(args) != 0) {
-                    swapRecursive(indexA, indexB, args...);
+                    swapRecursive(indexA, indexB, std::forward<Args>(args)...);
                 }
             }
-            // Get an element from a vector.
+            // Get an element from a vector based on an entity ID.
             template <typename T>
-            T& get(int eID, std::vector<T>& vec) {
+            T& get(Entity eID, std::vector<T>& vec) {
                 try {
                     return vec[entityComponent.at(eID)];
                 } catch (std::out_of_range& e) {
                     throw std::invalid_argument("Entity not present in system.");
                 }
             }
+
             template <typename T>
-            const T& get(int eID, const std::vector<T>& vec) const {
+            const T& get(Entity eID, const std::vector<T>& vec) const {
                 try {
                     return vec[entityComponent.at(eID)];
                 } catch (std::out_of_range& e) {
@@ -93,19 +96,19 @@ namespace StealthEngine {
 
             template <typename Vec, typename Elem, typename... Args>
             void addComponentRecursive(Vec& vec, Elem&& elem, Args&&... args) {
-                vec.emplace_back(elem);
+                vec.emplace_back(std::forward<Elem>(elem));
                 if constexpr (sizeof...(args) != 0) {
-                    addComponentRecursive(args...);
+                    addComponentRecursive(std::forward<Args>(args)...);
                 }
             }
 
             template <typename Vec, typename... Args>
-            void removeComponentRecursive(int index, Vec& vec, Args&... args) {
+            void removeComponentRecursive(int index, Vec& vec, Args&&... args) {
                 // Remove elements by swapping them with the last element.
                 vec[index] = vec.back();
                 vec.pop_back();
                 if constexpr (sizeof...(args) != 0) {
-                    removeComponentRecursive(index, args...);
+                    removeComponentRecursive(index, std::forward<Args>(args)...);
                 }
             }
 

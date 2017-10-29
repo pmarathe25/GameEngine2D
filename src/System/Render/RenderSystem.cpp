@@ -24,11 +24,11 @@ namespace StealthEngine {
     }
 
     sf::Sprite& RenderSystem::sprite(int eID) {
-        return System<RenderSystem>::get(eID, sprites);
+        return get(eID, sprites);
     }
 
     const sf::Sprite& RenderSystem::sprite(int eID) const {
-        return System<RenderSystem>::get(eID, sprites);
+        return get(eID, sprites);
     }
 
     void RenderSystem::onUpdatePosition(int eID, const sf::Vector2f& position) {
